@@ -1,12 +1,15 @@
 //
 //  ViewController.m
 //  FHReader
-//
-//  Created by hefeiyang on 2018/3/16.
-//  Copyright © 2018年 hefeiyang. All rights reserved.
+//  
+//  Created by fly on 2018/3/3.
+//  Copyright © 2018年 flyho. All rights reserved.
 //
 
 #import "ViewController.h"
+#import "FHReadPageViewController.h"
+#import "FHConstant.h"
+#import "AppDefine.h"
 
 @interface ViewController ()
 
@@ -16,13 +19,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    [self initUI];
 }
 
+- (void)initUI {
+    
+}
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    FHReadPageViewController *readPageVC = [FHReadPageViewController createReaderWithContentPath:@"Content.json"];
+//    [self.navigationController pushViewController:readPageVC animated:YES];
+    [self presentViewController:readPageVC animated:YES completion:nil];
 }
 
 
