@@ -15,7 +15,7 @@
 @interface FHReadPageViewController () <UIPageViewControllerDelegate,UIPageViewControllerDataSource>
 {
     NSInteger _currentPage;
-    FHChapter *_curretChapter;
+    FHChapter *_currentChapter;
 }
 @property (nonatomic,strong) FHPageViewController *pageViewController;
 @property (nonatomic,strong) FHReadContent *content;
@@ -30,11 +30,11 @@
 
 - (instancetype)initWithContentPath:(NSString *)contentPath {
     if (self = [super init]) {
+        _content = [FHReadContent createContentWithFile:contentPath];
+        _currentChapter = _content.chapters[0];
+        _currentPage = 1;
         [self addChildViewController:self.pageViewController];
         [self.view addSubview:self.pageViewController.view];
-        _content = [FHReadContent createContentWithFile:contentPath];
-        _curretChapter = _content.chapters[0];
-        _currentPage = 0;
     }
     return self;
 }
@@ -46,19 +46,25 @@
 #pragma mark UIPageViewControllerDelegate
 #pragma mark - UIPageViewControllerDataSource
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
+    
+    if (_currentChapter.chapterNo == 1 && _currentPage == 1) return nil;
+    
     if ([viewController isKindOfClass:[ContentViewController class]] && pageViewController.doubleSided) {
         return [FHBackViewController createBackPageWithFontPage:viewController];
     }
-    if (_curretChapter.chapterNo == 0 && _currentPage == 0) return nil;
-    
-    ContentViewController *contentVC = [ContentViewController createPageWithChapter:_content.chapters[0]];
+    _currentPage --;
+    ContentViewController *contentVC = [ContentViewController createPageWithChapter:_content.chapters[_currentPage]];
     return contentVC;
 }
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
+    
+    if (_currentChapter.chapterNo == _content.totalChapter  && _currentPage == [_currentChapter getPageCount]) return nil;
+    
     if ([viewController isKindOfClass:[ContentViewController class]] && pageViewController.doubleSided) {
         return [FHBackViewController createBackPageWithFontPage:viewController];
     }
-    ContentViewController *contentVC = [[ContentViewController alloc] init];
+    _currentPage ++;
+    ContentViewController *contentVC = [ContentViewController createPageWithChapter:_content.chapters[_currentPage]];
     return contentVC;
 }
 
@@ -69,7 +75,7 @@
         _pageViewController.view.frame = self.view.bounds;
         _pageViewController.delegate = self;
         _pageViewController.dataSource = self;
-        ContentViewController *contentVC = [[ContentViewController alloc] init];
+        ContentViewController *contentVC = [ContentViewController createPageWithChapter:_currentChapter];
         _pageViewController.doubleSided = _pageViewController.transitionStyle == UIPageViewControllerTransitionStylePageCurl;
         [_pageViewController setViewControllers:@[contentVC] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
     }

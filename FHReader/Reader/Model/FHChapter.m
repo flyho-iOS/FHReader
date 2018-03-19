@@ -32,4 +32,8 @@
     return self;
 }
 
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    
+}
+
 @end

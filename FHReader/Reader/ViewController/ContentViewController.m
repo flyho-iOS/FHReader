@@ -15,6 +15,7 @@
 
 @property (nonatomic,strong) FHChapter *chapter; //分页内容
 @property (nonatomic,strong) FHReadView *readView;
+@property (nonatomic,strong) UILabel *label;
 
 @end
 
@@ -28,7 +29,7 @@
     if (self = [super init]) {
         _chapter = chapter;
         [self.view addSubview:self.readView];
-        
+        self.label.text = _chapter.content;
     }
     return self;
 }
@@ -41,6 +42,11 @@
 - (FHReadView *)readView {
     if (!_readView) {
         _readView = [[FHReadView alloc] initWithFrame:self.view.bounds];
+        _readView.backgroundColor = [UIColor lightGrayColor];
+        UILabel *label = [[UILabel alloc] initWithFrame:_readView.bounds];
+        label.numberOfLines = 0;
+        [_readView addSubview:label];
+        _label = label;
     }
     return _readView;
 }

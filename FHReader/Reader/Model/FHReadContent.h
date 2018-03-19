@@ -18,13 +18,15 @@
 /** 书籍标识，这里用文件名，严格设计应该赋予唯一标识 */
 @property (nonatomic,copy) NSString *identifier;
 /** 笔记 */
-@property (nonatomic,strong) NSMutableArray<FHNote *> *notes;
+@property (nonatomic,copy) NSArray<FHNote *> *notes;
 /** 书签 */
-@property (nonatomic,strong) NSMutableArray<FHBookMark *> *marks;
+@property (nonatomic,copy) NSArray<FHBookMark *> *marks;
 /** 章节 */
-@property (nonatomic,strong) NSMutableArray<FHChapter *> *chapters;
+@property (nonatomic,copy) NSArray<FHChapter *> *chapters;
 /** 阅读记录 */
 @property (nonatomic,strong) FHRecord *record;
+/** 章节总数 */
+@property (nonatomic,assign,readonly) NSInteger totalChapter;
 
 /**
  *  创建内容模型

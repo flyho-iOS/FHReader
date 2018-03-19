@@ -18,8 +18,7 @@
 - (instancetype)initWithFileName:(NSString *)fileName {
     if (self = [super init]) {
         _identifier = fileName;
-        NSArray *chapters = [FHParserUtil parserFileToChapter:fileName];
-        [self.chapters addObjectsFromArray:chapters];
+        _chapters = [FHParserUtil parserFileToChapter:fileName];
     }
     return self;
 }
@@ -51,25 +50,8 @@
 }
 
 #pragma mark - getter
-- (NSMutableArray<FHChapter *> *)chapters {
-    if (!_chapters) {
-        _chapters = [NSMutableArray new];
-    }
-    return _chapters;
-}
-
-- (NSMutableArray<FHNote *> *)notes {
-    if (!_notes) {
-        _notes = [NSMutableArray new];
-    }
-    return _notes;
-}
-
-- (NSMutableArray<FHBookMark *> *)marks {
-    if (!_marks) {
-        _marks = [NSMutableArray new];
-    }
-    return _marks;
+- (NSInteger)totalChapter {
+    return _chapters.count;
 }
 
 @end
