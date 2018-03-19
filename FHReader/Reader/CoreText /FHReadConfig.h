@@ -35,6 +35,6 @@ typedef NS_ENUM(NSInteger , FHReadPageTransitionStyle) {
  *  获取配置参数
  *  @return FHReadConfig  配置参数
  */
-+ (FHReadConfig *)getCacheConfig;
++ (FHReadConfig *)getConfig;
 
 @end

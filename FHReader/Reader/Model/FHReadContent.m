@@ -9,6 +9,8 @@
 #import "FHReadContent.h"
 #import "FHParserUtil.h"
 
+static NSString *const FHContentCache = @"FHContentCache";
+
 @implementation FHReadContent
 
 + (instancetype)createContentWithFile:(NSString *)fileName {
@@ -16,11 +18,19 @@
 }
 
 - (instancetype)initWithFileName:(NSString *)fileName {
+    FHReadContent *content = [FHReadContent getCacheContent];
+    if (content)
+        return content;
+    
     if (self = [super init]) {
         _identifier = fileName;
         _chapters = [FHParserUtil parserFileToChapter:fileName];
     }
     return self;
+}
+
++ (FHReadContent *)getCacheContent {
+    return [FHUserDefault objectForKey:FHContentCache];
 }
 
 - (instancetype)init {

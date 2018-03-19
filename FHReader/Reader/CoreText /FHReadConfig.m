@@ -13,15 +13,16 @@ static NSString *const ConfigCacheKey = @"ConfigCacheKey";
 @implementation FHReadConfig 
 
 #pragma mark - initialize
-+ (FHReadConfig *)getCacheConfig {
+
++ (FHReadConfig *)getConfig {
     return [[self alloc] init];
 }
 
 - (instancetype)init {
-    if ([FHReadConfig getCacheConfig]) {
-        FHReadConfig *config = [FHReadConfig getCacheConfig];
+    FHReadConfig *config = [FHReadConfig getCacheConfig];
+    if (config)
         return config;
-    }
+    
     if (self = [super init]) {
         _themeColor = [UIColor lightGrayColor];
         _fontSize = 20;
@@ -29,6 +30,10 @@ static NSString *const ConfigCacheKey = @"ConfigCacheKey";
         _style = FHREeadPageTransitionStylePageCurl;
     }
     return self;
+}
+
++ (FHReadConfig *)getCacheConfig {
+    return [FHUserDefault objectForKey:ConfigCacheKey];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
