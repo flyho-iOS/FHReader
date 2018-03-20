@@ -11,6 +11,7 @@
 #import "FHNote.h"
 #import "FHRecord.h"
 #import "FHBookMark.h"
+#import "FHPaginateContent.h"
 
 /** 该类管理书籍内容 */
 @interface FHReadContent : NSObject <NSCoding>
@@ -23,6 +24,8 @@
 @property (nonatomic,copy) NSArray<FHBookMark *> *marks;
 /** 章节 */
 @property (nonatomic,copy) NSArray<FHChapter *> *chapters;
+/** 所有章节所有分页 */
+@property (nonatomic,copy) NSArray<FHPaginateContent *> *paginateContents;
 /** 阅读记录 */
 @property (nonatomic,strong) FHRecord *record;
 /** 章节总数 */

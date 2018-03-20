@@ -32,6 +32,7 @@
 		4FA2ED4C205BC47200E2199E /* NSObject+YYModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2ED48205BC47200E2199E /* NSObject+YYModel.m */; };
 		4FA2ED4D205BC47200E2199E /* YYClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2ED4A205BC47200E2199E /* YYClassInfo.m */; };
 		67DB6A8D205E57760016ABEB /* FHHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 67DB6A8C205E57760016ABEB /* FHHelper.m */; };
+		67DB6A912061347F0016ABEB /* FHPaginateContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 67DB6A902061347F0016ABEB /* FHPaginateContent.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +88,8 @@
 		4FA2ED4B205BC47200E2199E /* YYModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYModel.h; sourceTree = "<group>"; };
 		67DB6A8B205E57760016ABEB /* FHHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FHHelper.h; sourceTree = "<group>"; };
 		67DB6A8C205E57760016ABEB /* FHHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FHHelper.m; sourceTree = "<group>"; };
+		67DB6A8F2061347F0016ABEB /* FHPaginateContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHPaginateContent.h; sourceTree = "<group>"; };
+		67DB6A902061347F0016ABEB /* FHPaginateContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHPaginateContent.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +208,8 @@
 			children = (
 				4FA2ED07205BAFA900E2199E /* FHReadContent.h */,
 				4FA2ED08205BAFA900E2199E /* FHReadContent.m */,
+				67DB6A8F2061347F0016ABEB /* FHPaginateContent.h */,
+				67DB6A902061347F0016ABEB /* FHPaginateContent.m */,
 				4FA2ED01205BAFA900E2199E /* FHChapter.h */,
 				4FA2ED02205BAFA900E2199E /* FHChapter.m */,
 				4FA2ECFF205BAFA900E2199E /* FHBookMark.h */,
@@ -370,6 +375,7 @@
 				4FA2ED38205BAFA900E2199E /* ContentViewController.m in Sources */,
 				4FA2ED17205BAFA900E2199E /* FHFrameConstructor.m in Sources */,
 				4FA2ED4C205BC47200E2199E /* NSObject+YYModel.m in Sources */,
+				67DB6A912061347F0016ABEB /* FHPaginateContent.m in Sources */,
 				4FA2ED39205BAFA900E2199E /* FHBackViewController.m in Sources */,
 				4FA2ED4D205BC47200E2199E /* YYClassInfo.m in Sources */,
 				4FA2ED37205BAFA900E2199E /* FHReadView.m in Sources */,

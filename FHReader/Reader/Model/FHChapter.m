@@ -7,33 +7,51 @@
 //
 
 #import "FHChapter.h"
+#import "FHFrameConstructor.h"
+#import "FHPaginateContent.h"
 
 @interface FHChapter ()
 {
-    NSInteger _pageCount;
-    NSArray *_paginateContents;
+    NSArray *_tempPaginateContents;
 }
 @end
 
 @implementation FHChapter
 
-- (NSArray *)getPaginateContents {
-    return _paginateContents;
-}
-
-- (NSInteger)getPageCount {
-    return _pageCount;
-}
-
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
-        
+        self.chapterNo = [[aDecoder decodeObjectForKey:@"chapterNo"] integerValue];
+        self.title = [aDecoder decodeObjectForKey:@"title"];
+        self.paginateContents = [aDecoder decodeObjectForKey:@"paginateContents"];
     }
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
-    
+    [aCoder encodeObject:@(self.chapterNo) forKey:@"chapterNo"];
+    [aCoder encodeObject:self.title forKey:@"title"];
+    [aCoder encodeObject:self.paginateContents forKey:@"paginateContents"];
+}
+
+#pragma mark - setter
+- (void)setContent:(NSString *)content {
+    _content = content;
+    NSArray *pageContent = [FHFrameConstructor paginateContent:content];
+    NSMutableArray<FHPaginateContent *> *paginateContents = [NSMutableArray array];
+    if (self.paginateContents.count == 0) {
+        for (int i = 0; i < pageContent.count; i ++) {
+            FHPaginateContent *pc =
+            [FHPaginateContent createPaginateContentWithContent:pageContent[i]
+                                                      chapterNo:self.chapterNo-1
+                                                         pageNo:i];
+            [paginateContents addObject:pc];
+        }
+        self.paginateContents = [paginateContents copy];
+    }
+}
+#pragma mark - getter
+- (NSInteger)pageCount {
+    return self.paginateContents.count;
 }
 
 @end

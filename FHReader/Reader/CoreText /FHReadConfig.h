@@ -15,6 +15,8 @@ typedef NS_ENUM(NSInteger , FHReadPageTransitionStyle) {
 };
 
 @interface FHReadConfig : NSObject <NSCoding>
+
+@property (nonatomic,strong) UIColor *fontColor;
 /** 主题背景色 */
 @property (nonatomic,strong) UIColor *themeColor;
 /** 行距 */

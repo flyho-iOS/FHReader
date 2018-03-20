@@ -19,12 +19,17 @@ static NSString *const FHContentCache = @"FHContentCache";
 
 - (instancetype)initWithFileName:(NSString *)fileName {
     FHReadContent *content = [FHReadContent getCacheContent];
-    if (content)
+    if (content) {
         return content;
-    
+    }
     if (self = [super init]) {
         _identifier = fileName;
         _chapters = [FHParserUtil parserFileToChapter:fileName];
+        NSMutableArray<FHPaginateContent *> *pcs = [NSMutableArray array];
+        for (FHChapter *chapter in _chapters) {
+            [pcs addObjectsFromArray:chapter.paginateContents];
+        }
+        _paginateContents = [pcs copy];
     }
     return self;
 }
@@ -33,11 +38,9 @@ static NSString *const FHContentCache = @"FHContentCache";
     return [FHUserDefault objectForKey:FHContentCache];
 }
 
-- (instancetype)init {
-    if (self = [super init]) {
-        
-    }
-    return self;
+- (void)updateContent {
+    [FHUserDefault setObject:self forKey:self.identifier];
+    [FHUserDefault synchronize];
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {

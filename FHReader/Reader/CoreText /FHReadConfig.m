@@ -20,9 +20,9 @@ static NSString *const ConfigCacheKey = @"ConfigCacheKey";
 
 - (instancetype)init {
     FHReadConfig *config = [FHReadConfig getCacheConfig];
-    if (config)
+    if (config) {
         return config;
-    
+    }
     if (self = [super init]) {
         _themeColor = [UIColor lightGrayColor];
         _fontSize = 20;
@@ -38,6 +38,7 @@ static NSString *const ConfigCacheKey = @"ConfigCacheKey";
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
+        self.fontColor = [aDecoder decodeObjectForKey:@"fontColor"];
         self.themeColor = [aDecoder decodeObjectForKey:@"themeColor"];
         self.fontSize = [[aDecoder decodeObjectForKey:@"fontSize"] integerValue];
         self.lineSpace = [[aDecoder decodeObjectForKey:@"lineSpace"] floatValue];
@@ -48,6 +49,7 @@ static NSString *const ConfigCacheKey = @"ConfigCacheKey";
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:self.themeColor forKey:@"themeColor"];
+    [aCoder encodeObject:self.fontColor forKey:@"fontColor"];
     [aCoder encodeObject:[NSNumber numberWithInteger:self.fontSize] forKey:@"fontSize"];
     [aCoder encodeObject:[NSNumber numberWithFloat:self.lineSpace] forKey:@"lineSpace"];
     [aCoder encodeObject:[NSNumber numberWithInteger:self.style] forKey:@"style"];
@@ -55,11 +57,8 @@ static NSString *const ConfigCacheKey = @"ConfigCacheKey";
 
 #pragma mark - cache
 + (void)updateCacheConfig:(FHReadConfig *)config {
-    NSMutableData *data = [[NSMutableData alloc]init];
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-    [archiver encodeObject:config forKey:ConfigCacheKey];
-    [archiver finishEncoding];
     [FHUserDefault setObject:config forKey:ConfigCacheKey];
+    [FHUserDefault synchronize];
 }
 
 @end

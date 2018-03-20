@@ -10,4 +10,6 @@
 
 @interface FHFrameConstructor : NSObject
 
++ (NSArray *)paginateContent:(NSString *)content;
+
 @end

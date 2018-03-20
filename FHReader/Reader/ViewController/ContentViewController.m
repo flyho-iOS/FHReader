@@ -8,12 +8,11 @@
 
 #import "ContentViewController.h"
 #import "FHReadConfig.h"
-#import "FHReadContent.h"
 #import "FHReadView.h"
+#import "FHPaginateContent.h"
 
 @interface ContentViewController ()
 
-@property (nonatomic,strong) FHChapter *chapter; //分页内容
 @property (nonatomic,strong) FHReadView *readView;
 @property (nonatomic,strong) UILabel *label;
 
@@ -21,15 +20,15 @@
 
 @implementation ContentViewController
 
-+ (instancetype)createPageWithChapter:(FHChapter *)chapter {
-    return [[self alloc] initWithChapter:chapter];
++ (instancetype)createPageWithContent:(FHPaginateContent *)paginateContent {
+    return [[self alloc] initWithContent:paginateContent];
 }
 
-- (instancetype)initWithChapter:(FHChapter *)chapter {
+- (instancetype)initWithContent:(FHPaginateContent *)paginateContent {
     if (self = [super init]) {
-        _chapter = chapter;
+        _paginateContent = paginateContent;
         [self.view addSubview:self.readView];
-        self.label.text = _chapter.content;
+        self.label.text = paginateContent.content;
     }
     return self;
 }

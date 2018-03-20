@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class FHChapter;
+@class FHPaginateContent;
 
 @interface ContentViewController : UIViewController
 
-+ (instancetype)createPageWithChapter:(FHChapter *)chapter;
+@property (nonatomic,strong) FHPaginateContent *paginateContent; //分页内容
+
++ (instancetype)createPageWithContent:(FHPaginateContent *)paginateContent;
 
 @end
