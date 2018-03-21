@@ -8,8 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+@class FHReadConfig;
+@class FHReadPageDrawer;
+
 @interface FHFrameConstructor : NSObject
 
-+ (NSArray *)paginateContent:(NSString *)content;
++ (FHReadPageDrawer *)parseContent:(NSString *)content config:(FHReadConfig *)config bounds:(CGRect)bounds;
+
++ (NSArray *)paginateContent:(NSString *)content WithConfig:(FHReadConfig *)config;
 
 @end

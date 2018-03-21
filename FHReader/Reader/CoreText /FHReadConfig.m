@@ -25,21 +25,19 @@ static NSString *const ConfigCacheKey = @"ConfigCacheKey";
     }
     if (self = [super init]) {
         _themeColor = [UIColor lightGrayColor];
-        _fontSize = 20;
+        _fontSize = 17;
         _lineSpace = 0.5f;
         _style = FHREeadPageTransitionStylePageCurl;
+        [self updateCacheConfig];
     }
     return self;
-}
-
-+ (FHReadConfig *)getCacheConfig {
-    return [FHUserDefault objectForKey:ConfigCacheKey];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
         self.fontColor = [aDecoder decodeObjectForKey:@"fontColor"];
         self.themeColor = [aDecoder decodeObjectForKey:@"themeColor"];
+        self.fontName = [aDecoder decodeObjectForKey:@"fontName"];
         self.fontSize = [[aDecoder decodeObjectForKey:@"fontSize"] integerValue];
         self.lineSpace = [[aDecoder decodeObjectForKey:@"lineSpace"] floatValue];
         self.style = [[aDecoder decodeObjectForKey:@"style"] integerValue];
@@ -50,15 +48,26 @@ static NSString *const ConfigCacheKey = @"ConfigCacheKey";
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:self.themeColor forKey:@"themeColor"];
     [aCoder encodeObject:self.fontColor forKey:@"fontColor"];
+    [aCoder encodeObject:self.fontName forKey:@"fontName"];
     [aCoder encodeObject:[NSNumber numberWithInteger:self.fontSize] forKey:@"fontSize"];
     [aCoder encodeObject:[NSNumber numberWithFloat:self.lineSpace] forKey:@"lineSpace"];
     [aCoder encodeObject:[NSNumber numberWithInteger:self.style] forKey:@"style"];
 }
 
 #pragma mark - cache
-+ (void)updateCacheConfig:(FHReadConfig *)config {
-    [FHUserDefault setObject:config forKey:ConfigCacheKey];
+- (void)updateCacheConfig {
+    NSMutableData *data = [[NSMutableData alloc]init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+    [archiver encodeObject:self forKey:ConfigCacheKey];
+    [archiver finishEncoding];
+    [FHUserDefault setObject:data forKey:ConfigCacheKey];
     [FHUserDefault synchronize];
+}
+
++ (FHReadConfig *)getCacheConfig {
+    NSData *data = [FHUserDefault objectForKey:ConfigCacheKey];
+    NSKeyedUnarchiver *unarchive = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+    return [unarchive decodeObjectForKey:ConfigCacheKey];
 }
 
 @end

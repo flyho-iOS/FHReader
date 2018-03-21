@@ -57,12 +57,15 @@
     if ((preVC.paginateContent.chapterNo < _fontVC.paginateContent.chapterNo) || (preVC.paginateContent.chapterNo == _fontVC.paginateContent.chapterNo && preVC.paginateContent.pageNo < _fontVC.paginateContent.pageNo)) {
         isSwipeForward = YES;
     }
-    if (finished && completed) {
+    if (finished && completed) { //翻页动画结束且已翻页
         if (isSwipeForward) {
             _currentPaginateNo ++;
         }else{
             _currentPaginateNo --;
         }
+        if (_currentPaginateNo < 0) _currentPaginateNo = 0;
+        if (_currentPaginateNo > _content.paginateContents.count-1) _currentPaginateNo = _content.paginateContents.count-1;
+        
         NSLog(@"第%ld章,第%ld页,共%ld页,第%ld页",[_content.paginateContents[_currentPaginateNo] chapterNo]+1,[_content.paginateContents[_currentPaginateNo] pageNo]+1,_content.paginateContents.count,_currentPaginateNo+1);
     }
     // 翻页完成后开启交互，防止翻页过快导致页码定位错误
@@ -78,18 +81,6 @@
 
 #pragma mark - UIPageViewControllerDataSource
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    
-//    if (_currentChapterNo == 0 && _currentPage == 0) return nil; //第一张第一页不能再向前翻
-//
-//    FHChapter *chapter;
-//    if (_currentPage == 0) {
-//        _currentChapterNo --;
-//        chapter = _content.chapters[_currentChapterNo];
-//        _currentPage = chapter.pageCount-1;
-//    }else{
-//        _currentPage --;
-//        chapter = _content.chapters[_currentChapterNo];
-//    }
     
     if (_currentPaginateNo == 0) return nil;
     
@@ -107,16 +98,6 @@
     if ([viewController isKindOfClass:[ContentViewController class]] && pageViewController.doubleSided) {
         return [FHBackViewController createBackPageWithFontPage:viewController];
     }
-    
-//    NSInteger currentPageNo = 0;
-//    NSInteger currentChapNo = 0;
-//    if (_currentPage == currentChapter.pageCount-1) {
-//        currentPageNo = _currentChapterNo+1 ;
-//        currentChapNo = 0;
-//    }else{
-//        currentPageNo = _currentPage + 1;
-//    }
-    
     NSInteger cpn = _currentPaginateNo + 1;
     
     if (cpn > _content.paginateContents.count-1) return nil;

@@ -9,6 +9,7 @@
 #import "FHChapter.h"
 #import "FHFrameConstructor.h"
 #import "FHPaginateContent.h"
+#import "FHReadConfig.h"
 
 @interface FHChapter ()
 {
@@ -35,15 +36,18 @@
 
 #pragma mark - setter
 - (void)setContent:(NSString *)content {
-    _content = content;
-    NSArray *pageContent = [FHFrameConstructor paginateContent:content];
+//    _content = content;
+    FHReadConfig *config = [FHReadConfig getConfig];
+    NSArray *pageContent = [FHFrameConstructor paginateContent:content WithConfig:config];
     NSMutableArray<FHPaginateContent *> *paginateContents = [NSMutableArray array];
     if (self.paginateContents.count == 0) {
         for (int i = 0; i < pageContent.count; i ++) {
             FHPaginateContent *pc =
-            [FHPaginateContent createPaginateContentWithContent:pageContent[i]
-                                                      chapterNo:self.chapterNo-1
-                                                         pageNo:i];
+            [FHPaginateContent createPaginateContentWithTitle:self.title
+                                                      Content:pageContent[i]
+                                                    totalPage:pageContent.count
+                                                    chapterNo:self.chapterNo-1
+                                                       pageNo:i];
             [paginateContents addObject:pc];
         }
         self.paginateContents = [paginateContents copy];

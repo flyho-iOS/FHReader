@@ -10,12 +10,16 @@
 
 @interface FHPaginateContent : NSObject <NSCoding>
 
+@property (nonatomic,copy)   NSString *title;
 @property (nonatomic,copy)   NSString *content;
+@property (nonatomic,assign) NSInteger totalPage;
 @property (nonatomic,assign) NSInteger chapterNo;
 @property (nonatomic,assign) NSInteger pageNo;
 
-+ (instancetype)createPaginateContentWithContent:(NSString *)content
-                                       chapterNo:(NSInteger)chapterNo
-                                          pageNo:(NSInteger)pageNo;
++ (instancetype)createPaginateContentWithTitle:(NSString *)title
+                                       Content:(NSString *)content
+                                     totalPage:(NSInteger)totalPage
+                                     chapterNo:(NSInteger)chapterNo
+                                        pageNo:(NSInteger)pageNo;
 
 @end

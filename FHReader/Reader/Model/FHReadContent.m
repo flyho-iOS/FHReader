@@ -18,7 +18,7 @@ static NSString *const FHContentCache = @"FHContentCache";
 }
 
 - (instancetype)initWithFileName:(NSString *)fileName {
-    FHReadContent *content = [FHReadContent getCacheContent];
+    FHReadContent *content = [FHReadContent getCacheContentWithIdentifier:fileName];
     if (content) {
         return content;
     }
@@ -30,16 +30,23 @@ static NSString *const FHContentCache = @"FHContentCache";
             [pcs addObjectsFromArray:chapter.paginateContents];
         }
         _paginateContents = [pcs copy];
+        [self updateContent];
     }
     return self;
 }
 
-+ (FHReadContent *)getCacheContent {
-    return [FHUserDefault objectForKey:FHContentCache];
++ (FHReadContent *)getCacheContentWithIdentifier:(NSString *)identifier {
+    NSData *data = [FHUserDefault objectForKey:identifier];
+    NSKeyedUnarchiver *unarchive = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+    return [unarchive decodeObjectForKey:identifier];
 }
 
 - (void)updateContent {
-    [FHUserDefault setObject:self forKey:self.identifier];
+    NSMutableData *data = [[NSMutableData alloc]init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+    [archiver encodeObject:self forKey:self.identifier];
+    [archiver finishEncoding];
+    [FHUserDefault setObject:data forKey:self.identifier];
     [FHUserDefault synchronize];
 }
 
@@ -49,6 +56,7 @@ static NSString *const FHContentCache = @"FHContentCache";
     [aCoder encodeObject:self.marks forKey:@"marks"];
     [aCoder encodeObject:self.chapters forKey:@"chapters"];
     [aCoder encodeObject:self.record forKey:@"record"];
+    [aCoder encodeObject:self.paginateContents forKey:@"paginateContents"];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
@@ -58,6 +66,7 @@ static NSString *const FHContentCache = @"FHContentCache";
         self.marks = [aDecoder decodeObjectForKey:@"marks"];
         self.chapters = [aDecoder decodeObjectForKey:@"chapters"];
         self.record = [aDecoder decodeObjectForKey:@"record"];
+        self.paginateContents = [aDecoder decodeObjectForKey:@"paginateContents"];
     }
     return self;
 }

@@ -9,6 +9,7 @@
 #import "FHPageViewController.h"
 #import "AppDefine.h"
 #import "FHConstant.h"
+#import "FHReadConfig.h"
 
 @interface FHPageViewController ()
 
@@ -17,7 +18,7 @@
 @implementation FHPageViewController
 
 + (FHPageViewController *)configPageViewController {
-    UIPageViewControllerTransitionStyle style = [[FHUserDefault objectForKey:FHReadPageTransitionStyleKey] integerValue];
+    UIPageViewControllerTransitionStyle style = UIPageViewControllerTransitionStylePageCurl;
     UIPageViewControllerNavigationOrientation orientation = UIPageViewControllerNavigationOrientationHorizontal;
     NSString *key = style == UIPageViewControllerTransitionStylePageCurl ? UIPageViewControllerOptionSpineLocationKey: UIPageViewControllerOptionInterPageSpacingKey;
     NSDictionary *options = @{key : @(UIPageViewControllerSpineLocationNone)};
@@ -26,7 +27,12 @@
                                          options:options];
 }
 
-
+- (instancetype)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style navigationOrientation:(UIPageViewControllerNavigationOrientation)navigationOrientation options:(NSDictionary<NSString *,id> *)options {
+    if (self = [super initWithTransitionStyle:style navigationOrientation:navigationOrientation options:options]) {
+        self.view.backgroundColor = [FHReadConfig getConfig].themeColor;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

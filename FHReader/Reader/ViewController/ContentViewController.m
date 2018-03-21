@@ -11,10 +11,9 @@
 #import "FHReadView.h"
 #import "FHPaginateContent.h"
 
-@interface ContentViewController ()
+@interface ContentViewController () <FHReadViewDataSource>
 
 @property (nonatomic,strong) FHReadView *readView;
-@property (nonatomic,strong) UILabel *label;
 
 @end
 
@@ -28,7 +27,6 @@
     if (self = [super init]) {
         _paginateContent = paginateContent;
         [self.view addSubview:self.readView];
-        self.label.text = paginateContent.content;
     }
     return self;
 }
@@ -37,15 +35,25 @@
     [super viewDidLoad];
 }
 
+#pragma mark - FHReadViewDataSource
+- (NSString *)chapterTitle {
+    return self.paginateContent.title;
+}
+
+- (NSString *)chapterReadProgress {
+    return [NSString stringWithFormat:@"%ld / %ld",self.paginateContent.pageNo+1,self.paginateContent.totalPage];
+}
+
+- (NSString *)chapterContent {
+    return self.paginateContent.content;
+}
+
 #pragma mark - getter
 - (FHReadView *)readView {
     if (!_readView) {
         _readView = [[FHReadView alloc] initWithFrame:self.view.bounds];
-        _readView.backgroundColor = [UIColor lightGrayColor];
-        UILabel *label = [[UILabel alloc] initWithFrame:_readView.bounds];
-        label.numberOfLines = 0;
-        [_readView addSubview:label];
-        _label = label;
+        _readView.backgroundColor = [FHReadConfig getConfig].themeColor;
+        _readView.dataSource = self;
     }
     return _readView;
 }

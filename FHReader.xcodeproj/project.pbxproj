@@ -33,6 +33,7 @@
 		4FA2ED4D205BC47200E2199E /* YYClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2ED4A205BC47200E2199E /* YYClassInfo.m */; };
 		67DB6A8D205E57760016ABEB /* FHHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 67DB6A8C205E57760016ABEB /* FHHelper.m */; };
 		67DB6A912061347F0016ABEB /* FHPaginateContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 67DB6A902061347F0016ABEB /* FHPaginateContent.m */; };
+		67DB6A9420627E580016ABEB /* FHReadPageDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 67DB6A9320627E580016ABEB /* FHReadPageDrawer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,6 +91,8 @@
 		67DB6A8C205E57760016ABEB /* FHHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FHHelper.m; sourceTree = "<group>"; };
 		67DB6A8F2061347F0016ABEB /* FHPaginateContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHPaginateContent.h; sourceTree = "<group>"; };
 		67DB6A902061347F0016ABEB /* FHPaginateContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHPaginateContent.m; sourceTree = "<group>"; };
+		67DB6A9220627E570016ABEB /* FHReadPageDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHReadPageDrawer.h; sourceTree = "<group>"; };
+		67DB6A9320627E580016ABEB /* FHReadPageDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHReadPageDrawer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +162,8 @@
 				4FA2ECBB205BAFA900E2199E /* FHParserUtil.m */,
 				4FA2ECB8205BAFA900E2199E /* FHFrameConstructor.h */,
 				4FA2ECB9205BAFA900E2199E /* FHFrameConstructor.m */,
+				67DB6A9220627E570016ABEB /* FHReadPageDrawer.h */,
+				67DB6A9320627E580016ABEB /* FHReadPageDrawer.m */,
 			);
 			path = "CoreText ";
 			sourceTree = "<group>";
@@ -379,6 +384,7 @@
 				4FA2ED39205BAFA900E2199E /* FHBackViewController.m in Sources */,
 				4FA2ED4D205BC47200E2199E /* YYClassInfo.m in Sources */,
 				4FA2ED37205BAFA900E2199E /* FHReadView.m in Sources */,
+				67DB6A9420627E580016ABEB /* FHReadPageDrawer.m in Sources */,
 				4FA2ED3B205BAFA900E2199E /* FHReadPageViewController.m in Sources */,
 				4FA2ED18205BAFA900E2199E /* FHParserUtil.m in Sources */,
 				67DB6A8D205E57760016ABEB /* FHHelper.m in Sources */,

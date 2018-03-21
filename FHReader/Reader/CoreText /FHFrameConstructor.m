@@ -9,25 +9,64 @@
 #import "FHFrameConstructor.h"
 #import <CoreText/CoreText.h>
 #import "FHReadConfig.h"
+#import "FHReadPageDrawer.h"
 #import "AppDefine.h"
 
 #define ReadPageTopLayout 30
 #define ReadPageBottomLayout 30
 #define ReadPageLeftLayout 30
 #define ReadPageRightayout 30
+#define ReadPageBounds CGRectMake(ReadPageLeftLayout, ReadPageTopLayout, FHScreenWidth-ReadPageLeftLayout-ReadPageRightayout, FHScreenHeight-ReadPageTopLayout-ReadPageBottomLayout);
 
 @implementation FHFrameConstructor
 
-+ (NSArray *)paginateChapterIndex:(NSString *)content
-{
-    CGRect bounds = CGRectMake(ReadPageLeftLayout, ReadPageTopLayout, FHScreenWidth-ReadPageLeftLayout-ReadPageRightayout, FHScreenHeight-ReadPageTopLayout-ReadPageBottomLayout);
++ (FHReadPageDrawer *)parseContent:(NSString *)content config:(FHReadConfig *)config bounds:(CGRect)bounds {
+    NSDictionary *attributes = [self getParserAttributeWithConfig:config];
+    NSAttributedString *contentString =
+    [[NSAttributedString alloc] initWithString:content
+                                    attributes:attributes];
+    // 创建 CTFramesetterRef 实例
+    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)contentString);
+    // 获得要绘制的区域的高度
+    CGSize restrictSize = CGSizeMake(FHScreenWidth-60, FHScreenHeight-60);
+    CGSize coreTextSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0,0), nil, restrictSize, nil);
+    CGFloat textHeight = coreTextSize.height;
+
+    CGPathRef path = CGPathCreateWithRect(bounds, NULL);;
+//    CGPathAddRect(path, NULL, CGRectMake(0, 0, FHScreenWidth-40, height));
+    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
+    
+    FHReadPageDrawer *drawer = [FHReadPageDrawer new];
+    drawer.ctframe = frame;
+    drawer.height = textHeight;
+    // 释放内存
+    CFRelease(path);
+    CFRelease(frame);
+    CFRelease(framesetter);
+    return drawer;
+}
+
++ (CTFrameRef)createFrameWithFramesetter:(CTFramesetterRef)framesetter
+                                  config:(FHReadConfig *)config
+                                  height:(CGFloat)height
+                                 content:(NSString *)content {
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddRect(path, NULL, CGRectMake(0, 0, FHScreenWidth-40, height));
+    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
+    CFRelease(path);
+    return frame;
+}
+
++ (NSArray *)paginateChapterContent:(NSString *)content WithConfig:(FHReadConfig *)config{
+    
+    CGRect bounds = ReadPageBounds;
     NSMutableArray *pageArr = [NSMutableArray array];
     NSAttributedString *attrString;
     CTFramesetterRef frameSetter;
     CGPathRef path;
     NSMutableAttributedString *attrStr;
-    attrStr = [[NSMutableAttributedString  alloc] initWithString:content];
-    NSDictionary *attribute = [self getParserAttribute];
+    attrStr = [[NSMutableAttributedString alloc] initWithString:content];
+    NSDictionary *attribute = [self getParserAttributeWithConfig:config];
     [attrStr setAttributes:attribute range:NSMakeRange(0, attrStr.length)];
     attrString = [attrStr copy];
     frameSetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef) attrString);
@@ -55,7 +94,6 @@
                 [pageArr addObject:@(currentOffset)];
             }
             else {
-                
                 NSUInteger lastOffset = [[pageArr lastObject] integerValue];
                 
                 if (lastOffset != currentOffset) {
@@ -80,15 +118,14 @@
         }
         if (frame) CFRelease(frame);
     }
-    
     CGPathRelease(path);
     CFRelease(frameSetter);
     return pageArr;
 }
 
-+ (NSArray *)paginateContent:(NSString *)content {
++ (NSArray *)paginateContent:(NSString *)content WithConfig:(FHReadConfig *)config {
     NSMutableArray *paginateContent = [NSMutableArray array];
-    NSArray *paginateIndexs = [self paginateChapterIndex:content];
+    NSArray *paginateIndexs = [self paginateChapterContent:content WithConfig:config];
     for (int i = 0 ; i < paginateIndexs.count ; i ++) {
         NSInteger local = [paginateIndexs[i] integerValue];
         NSInteger length;
@@ -105,16 +142,15 @@
 }
 
 
-+(NSDictionary *)getParserAttribute
-{
-    FHReadConfig *config = [FHReadConfig getConfig];
++ (NSDictionary *)getParserAttributeWithConfig:(FHReadConfig *)config {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    dict[NSForegroundColorAttributeName] = config.fontColor;
-    dict[NSFontAttributeName] = [UIFont systemFontOfSize:config.fontSize];
+    dict[(id)kCTForegroundColorAttributeName] = config.fontColor;
+    CTFontRef fontRef = CTFontCreateWithName((CFStringRef)@"ArialMT", config.fontSize, NULL);
+    dict[(id)kCTFontAttributeName] = (__bridge id)fontRef;
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.lineSpacing = config.lineSpace;
     paragraphStyle.alignment = NSTextAlignmentJustified;
-    dict[NSParagraphStyleAttributeName] = paragraphStyle;
+    dict[(id)kCTParagraphStyleAttributeName] = paragraphStyle;
     return [dict copy];
 }
 

@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol FHReadViewDataSource <NSObject>
+
+- (NSString *) chapterTitle;
+- (NSString *) chapterReadProgress;
+- (NSString *) chapterContent;
+
+@end
+
 @interface FHReadView : UIView
+
+@property (nonatomic,weak) id<FHReadViewDataSource> dataSource;
 
 @end
