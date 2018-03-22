@@ -15,6 +15,6 @@
 
 + (FHReadPageDrawer *)parseContent:(NSString *)content config:(FHReadConfig *)config bounds:(CGRect)bounds;
 
-+ (NSArray *)paginateContent:(NSString *)content WithConfig:(FHReadConfig *)config;
++ (NSArray *)paginateContent:(NSString *)content WithConfig:(FHReadConfig *)config withBounds:(CGRect)bounds;
 
 @end

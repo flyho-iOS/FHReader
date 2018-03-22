@@ -11,7 +11,7 @@
 #import "FHConstant.h"
 #import "FHReadConfig.h"
 
-@interface FHPageViewController ()
+@interface FHPageViewController () <UIGestureRecognizerDelegate>
 
 @end
 
@@ -30,17 +30,33 @@
 - (instancetype)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style navigationOrientation:(UIPageViewControllerNavigationOrientation)navigationOrientation options:(NSDictionary<NSString *,id> *)options {
     if (self = [super initWithTransitionStyle:style navigationOrientation:navigationOrientation options:options]) {
         self.view.backgroundColor = [FHReadConfig getConfig].themeColor;
+        [self fixGestureConflict];
     }
     return self;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)fixGestureConflict {
+//    UIScrollView *scrollView;
+//    for (UIView *view in self.view.subviews) {
+//        if ([view isKindOfClass:[UIScrollView class]]) {
+//            scrollView = (UIScrollView *)view;
+//            break;
+//        }
+//    }
+//    for (UIGestureRecognizer *ges in scrollView.gestureRecognizers) {
+//        if ([ges isKindOfClass:[UIGestureRecognizer class]]) {
+//            ges.delegate = self;
+//        }
+//        
+//    }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(nonnull UITouch *)touch {
+    return YES;
 }
 
 @end

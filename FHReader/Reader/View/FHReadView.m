@@ -42,6 +42,20 @@
     return self;
 }
 
+- (void)redraw {
+    self.drawer = [FHFrameConstructor parseContent:[_dataSource chapterContent]
+                                            config:[FHReadConfig getConfig]
+                                            bounds:ReadPageRect];
+    [self setNeedsDisplay];
+    //刷新页面顶部标题和阅读进度
+    if (_dataSource && [_dataSource respondsToSelector:@selector(chapterTitle)]) {
+        self.titleLb.text = [_dataSource chapterTitle];
+    }
+    if (_dataSource && [_dataSource respondsToSelector:@selector(chapterReadProgress)]) {
+        self.progressLb.text = [_dataSource chapterReadProgress];
+    }
+}
+
 #pragma mark - setter
 - (void)setDataSource:(id<FHReadViewDataSource>)dataSource {
     _dataSource = dataSource;
@@ -52,7 +66,7 @@
         self.progressLb.text = [_dataSource chapterReadProgress];
     }
     if (_dataSource && [_dataSource respondsToSelector:@selector(chapterContent)]) {
-        self.drawer = [FHFrameConstructor parseContent:[_dataSource chapterContent] config:[FHReadConfig getConfig] bounds:CGRectMake(30, 30, FHScreenWidth-60, FHScreenHeight-60)];
+        self.drawer = [FHFrameConstructor parseContent:[_dataSource chapterContent] config:[FHReadConfig getConfig] bounds:ReadPageRect];
     }
 }
 

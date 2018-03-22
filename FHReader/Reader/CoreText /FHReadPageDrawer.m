@@ -19,7 +19,7 @@
         _ctframe = nil;
     }
 }
-// CTFrameRef由C语言实现，生命周期需要程序员管理
+// CTFrameRef由C语言实现，生命周期需要自己管理
 - (void)setCtframe:(CTFrameRef)ctframe {
     if (_ctframe != ctframe) {
         if (_ctframe) {

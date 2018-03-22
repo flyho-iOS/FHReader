@@ -16,4 +16,6 @@
 
 #define NSDocumentPath NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject
 
+#define ReadPageRect CGRectMake(30, 30, FHScreenWidth-70, FHScreenHeight-80)
+
 #endif /* AppDefine_h */

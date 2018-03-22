@@ -11,13 +11,15 @@
 #import "ContentViewController.h"
 #import "FHBackViewController.h"
 #import "FHReadContent.h"
+#import "FHReaderBar.h"
 
-@interface FHReadPageViewController () <UIPageViewControllerDelegate,UIPageViewControllerDataSource>
+@interface FHReadPageViewController () <UIPageViewControllerDelegate,UIPageViewControllerDataSource,FHReaderBarDelegate>
 {
     NSInteger _currentPaginateNo;
     ContentViewController *_fontVC;
 }
 @property (nonatomic,strong) FHPageViewController *pageViewController;
+@property (nonatomic,strong) FHReaderBar *readerToolBar;
 @property (nonatomic,strong) FHReadContent *content;
 
 @end
@@ -33,21 +35,31 @@
         [self addChildViewController:self.pageViewController];
         [self.view addSubview:self.pageViewController.view];
         _content = [FHReadContent createContentWithFile:contentPath];
-        _currentPaginateNo = 0;
         FHPaginateContent *pc = _content.paginateContents[_currentPaginateNo];
         ContentViewController *contentVC = [ContentViewController createPageWithContent:pc];
+        _fontVC = contentVC;
         [_pageViewController setViewControllers:@[contentVC] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+        [self.view addSubview:self.readerToolBar];
     }
     return self;
 }
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
+#pragma mark - statusBar
+- (BOOL)prefersStatusBarHidden {
+    return self.readerToolBar.isHidden;
 }
 
-- (BOOL)prefersStatusBarHidden {
-    return YES;
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = [touches anyObject];
+    CGPoint point = [touch locationInView:self.pageViewController.view];
+    NSLog(@"点击位置 --> x=%f,y=%f",point.x,point.y);
+    if (point.x > 50 && point.x < FHScreenWidth-100) {
+        self.readerToolBar.hidden = !self.readerToolBar.hidden;
+    }
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 #pragma mark UIPageViewControllerDelegate
@@ -69,13 +81,15 @@
         NSLog(@"第%ld章,第%ld页,共%ld页,第%ld页",[_content.paginateContents[_currentPaginateNo] chapterNo]+1,[_content.paginateContents[_currentPaginateNo] pageNo]+1,_content.paginateContents.count,_currentPaginateNo+1);
     }
     // 翻页完成后开启交互，防止翻页过快导致页码定位错误
-    if (finished) {
+    if (finished && self.pageViewController.transitionStyle == UIPageViewControllerTransitionStylePageCurl) {
         self.pageViewController.view.userInteractionEnabled = YES;
     }
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
-    _pageViewController.view.userInteractionEnabled = NO; //关掉用户交互
+    if (self.pageViewController.transitionStyle == UIPageViewControllerTransitionStylePageCurl) {
+        _pageViewController.view.userInteractionEnabled = NO; //关掉用户交互
+    }
     _fontVC = (ContentViewController *)[pendingViewControllers lastObject];
 }
 
@@ -93,6 +107,7 @@
     }
     return contentVC;
 }
+
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
     
     if ([viewController isKindOfClass:[ContentViewController class]] && pageViewController.doubleSided) {
@@ -107,6 +122,48 @@
     return contentVC;
 }
 
+#pragma mark - FHReaderBarDelegate
+
+- (void)readerBarDidClickExit {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)readerBarDidChangeFontSize {
+    [self.content collectPaginateChapters];
+    [self.content updateContent];
+    [_fontVC redrawReadPage];
+}
+
+- (void)readerBarDidClickThemeColor:(UIColor *)color {
+    self.pageViewController.view.backgroundColor = color;
+    [_fontVC changeThemeWithColor:color];
+}
+
+- (void)readerBarDidClickLastChapter {
+    
+    if (_currentPaginateNo == 0) return;
+    
+    FHPaginateContent *currentPage = self.content.paginateContents[_currentPaginateNo];
+    NSInteger currentChapterNo = currentPage.chapterNo;
+    FHChapter *lastChapter = self.content.chapters[currentChapterNo-1];
+    FHPaginateContent *lastChapterPage = self.content.paginateContents[lastChapter.startPageNo];
+    _fontVC.paginateContent = lastChapterPage;
+    _currentPaginateNo = lastChapter.startPageNo;
+    [_fontVC redrawReadPage];
+}
+
+- (void)readerBarDidClickNextChapter {
+    if (_currentPaginateNo == self.content.paginateContents.count -1) return;
+    
+    FHPaginateContent *currentPage = self.content.paginateContents[_currentPaginateNo];
+    NSInteger currentChapterNo = currentPage.chapterNo;
+    FHChapter *nextChapter = self.content.chapters[currentChapterNo+1];
+    FHPaginateContent *nextChapterPage = self.content.paginateContents[nextChapter.startPageNo];
+    _fontVC.paginateContent = nextChapterPage;
+    _currentPaginateNo = nextChapter.startPageNo;
+    [_fontVC redrawReadPage];
+}
+
 #pragma mark - lazy load
 - (FHPageViewController *)pageViewController {
     if (!_pageViewController) {
@@ -117,6 +174,16 @@
         _pageViewController.doubleSided = _pageViewController.transitionStyle == UIPageViewControllerTransitionStylePageCurl;
     }
     return _pageViewController;
+}
+
+- (FHReaderBar *)readerToolBar {
+    if (!_readerToolBar) {
+        FHReaderBar *bar = [[FHReaderBar alloc] initWithFrame:self.view.bounds];
+        bar.delegate = self;
+        _readerToolBar = bar;
+        _readerToolBar.hidden = YES;
+    }
+    return _readerToolBar;
 }
 
 @end

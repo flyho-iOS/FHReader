@@ -16,4 +16,8 @@
 
 + (instancetype)createPageWithContent:(FHPaginateContent *)paginateContent;
 
+- (void)redrawReadPage;
+
+- (void)changeThemeWithColor:(UIColor *)color;
+
 @end

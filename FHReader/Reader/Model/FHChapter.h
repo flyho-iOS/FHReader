@@ -13,13 +13,11 @@
 @interface FHChapter : NSObject <NSCoding>
 /** 章节序号 */
 @property (nonatomic,assign) NSInteger chapterNo;
+/** 章节开始页数（总页数） */
+@property (nonatomic,assign) NSInteger startPageNo;
 /** 章节标题 */
 @property (nonatomic,copy) NSString *title;
 /** 全章节内容 */
 @property (nonatomic,copy) NSString *content;
-/** 章节分页内容 */
-@property (nonatomic,copy) NSArray<FHPaginateContent *> *paginateContents;
-/** 章节页数 */
-@property (nonatomic,assign,readonly) NSInteger pageCount;
 
 @end

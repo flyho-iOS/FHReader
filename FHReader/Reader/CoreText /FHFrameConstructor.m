@@ -12,12 +12,6 @@
 #import "FHReadPageDrawer.h"
 #import "AppDefine.h"
 
-#define ReadPageTopLayout 30
-#define ReadPageBottomLayout 30
-#define ReadPageLeftLayout 30
-#define ReadPageRightayout 30
-#define ReadPageBounds CGRectMake(ReadPageLeftLayout, ReadPageTopLayout, FHScreenWidth-ReadPageLeftLayout-ReadPageRightayout, FHScreenHeight-ReadPageTopLayout-ReadPageBottomLayout);
-
 @implementation FHFrameConstructor
 
 + (FHReadPageDrawer *)parseContent:(NSString *)content config:(FHReadConfig *)config bounds:(CGRect)bounds {
@@ -28,12 +22,11 @@
     // 创建 CTFramesetterRef 实例
     CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)contentString);
     // 获得要绘制的区域的高度
-    CGSize restrictSize = CGSizeMake(FHScreenWidth-60, FHScreenHeight-60);
+    CGSize restrictSize = CGSizeMake(bounds.size.width, bounds.size.height);
     CGSize coreTextSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0,0), nil, restrictSize, nil);
     CGFloat textHeight = coreTextSize.height;
 
     CGPathRef path = CGPathCreateWithRect(bounds, NULL);;
-//    CGPathAddRect(path, NULL, CGRectMake(0, 0, FHScreenWidth-40, height));
     CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
     
     FHReadPageDrawer *drawer = [FHReadPageDrawer new];
@@ -46,20 +39,8 @@
     return drawer;
 }
 
-+ (CTFrameRef)createFrameWithFramesetter:(CTFramesetterRef)framesetter
-                                  config:(FHReadConfig *)config
-                                  height:(CGFloat)height
-                                 content:(NSString *)content {
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddRect(path, NULL, CGRectMake(0, 0, FHScreenWidth-40, height));
-    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
-    CFRelease(path);
-    return frame;
-}
-
-+ (NSArray *)paginateChapterContent:(NSString *)content WithConfig:(FHReadConfig *)config{
++ (NSArray *)paginateChapterContent:(NSString *)content WithConfig:(FHReadConfig *)config withBounds:(CGRect)bounds {
     
-    CGRect bounds = ReadPageBounds;
     NSMutableArray *pageArr = [NSMutableArray array];
     NSAttributedString *attrString;
     CTFramesetterRef frameSetter;
@@ -123,9 +104,9 @@
     return pageArr;
 }
 
-+ (NSArray *)paginateContent:(NSString *)content WithConfig:(FHReadConfig *)config {
++ (NSArray *)paginateContent:(NSString *)content WithConfig:(FHReadConfig *)config withBounds:(CGRect)bounds {
     NSMutableArray *paginateContent = [NSMutableArray array];
-    NSArray *paginateIndexs = [self paginateChapterContent:content WithConfig:config];
+    NSArray *paginateIndexs = [self paginateChapterContent:content WithConfig:config withBounds:bounds];
     for (int i = 0 ; i < paginateIndexs.count ; i ++) {
         NSInteger local = [paginateIndexs[i] integerValue];
         NSInteger length;

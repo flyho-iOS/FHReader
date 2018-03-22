@@ -35,6 +35,15 @@
     [super viewDidLoad];
 }
 
+#pragma mark -
+- (void)redrawReadPage {
+    [self.readView redraw];
+}
+
+- (void)changeThemeWithColor:(UIColor *)color {
+    self.readView.backgroundColor = color;
+}
+
 #pragma mark - FHReadViewDataSource
 - (NSString *)chapterTitle {
     return self.paginateContent.title;

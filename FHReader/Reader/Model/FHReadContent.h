@@ -38,4 +38,8 @@
  */
 + (instancetype)createContentWithFile:(NSString *)fileName;
 
+- (void)updateContent;
+
+- (void)collectPaginateChapters;
+
 @end

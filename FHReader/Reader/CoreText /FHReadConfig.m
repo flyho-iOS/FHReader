@@ -24,8 +24,8 @@ static NSString *const ConfigCacheKey = @"ConfigCacheKey";
         return config;
     }
     if (self = [super init]) {
-        _themeColor = [UIColor lightGrayColor];
-        _fontSize = 17;
+        _themeColor = [UIColor colorWithRed:226.0/255.0 green:204.0/255.0 blue:169.0/225.0 alpha:1.0];
+        _fontSize = 18;
         _lineSpace = 0.5f;
         _style = FHREeadPageTransitionStylePageCurl;
         [self updateCacheConfig];
