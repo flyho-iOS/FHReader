@@ -18,4 +18,6 @@
 
 #define ReadPageRect CGRectMake(30, 30, FHScreenWidth-70, FHScreenHeight-80)
 
+#define FHDeallocLog() NSLog(@"dealloc --> %@ <%p>",[self class],self);
+
 #endif /* AppDefine_h */

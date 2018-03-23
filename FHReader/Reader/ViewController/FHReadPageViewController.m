@@ -26,6 +26,10 @@
 
 @implementation FHReadPageViewController
 
+- (void)dealloc {
+    FHDeallocLog();
+}
+
 + (instancetype)createReaderWithContentPath:(NSString *)contentPath {
     return [[self alloc] initWithContentPath:contentPath];
 }
@@ -54,9 +58,9 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
-    CGPoint point = [touch locationInView:self.pageViewController.view];
+    CGPoint point = [touch locationInView:self.view];
     NSLog(@"点击位置 --> x=%f,y=%f",point.x,point.y);
-    if (point.x > 50 && point.x < FHScreenWidth-100) {
+    if (point.x > 50 && point.x < FHScreenWidth-50) {
         self.readerToolBar.hidden = !self.readerToolBar.hidden;
     }
     [self setNeedsStatusBarAppearanceUpdate];
@@ -131,6 +135,12 @@
 - (void)readerBarDidChangeFontSize {
     [self.content collectPaginateChapters];
     [self.content updateContent];
+    
+    if (_currentPaginateNo >= self.content.paginateContents.count-1) {
+        _currentPaginateNo = self.content.paginateContents.count-1;
+    }
+    
+    _fontVC.paginateContent = self.content.paginateContents[_currentPaginateNo];
     [_fontVC redrawReadPage];
 }
 
@@ -145,6 +155,9 @@
     
     FHPaginateContent *currentPage = self.content.paginateContents[_currentPaginateNo];
     NSInteger currentChapterNo = currentPage.chapterNo;
+    
+    if (currentChapterNo <= 0) return;
+    
     FHChapter *lastChapter = self.content.chapters[currentChapterNo-1];
     FHPaginateContent *lastChapterPage = self.content.paginateContents[lastChapter.startPageNo];
     _fontVC.paginateContent = lastChapterPage;
@@ -157,6 +170,9 @@
     
     FHPaginateContent *currentPage = self.content.paginateContents[_currentPaginateNo];
     NSInteger currentChapterNo = currentPage.chapterNo;
+    
+    if (currentChapterNo >= self.content.chapters.count-1) return;
+    
     FHChapter *nextChapter = self.content.chapters[currentChapterNo+1];
     FHPaginateContent *nextChapterPage = self.content.paginateContents[nextChapter.startPageNo];
     _fontVC.paginateContent = nextChapterPage;

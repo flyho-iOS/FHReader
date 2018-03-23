@@ -62,10 +62,6 @@ static NSString *const FHContentCache = @"FHContentCache";
     return paginateContents.copy;
 }
 
-//- (FHChapter *)locateChapterWithPageNo:(NSInteger)pageNo {
-//    
-//}
-
 + (FHReadContent *)getCacheContentWithIdentifier:(NSString *)identifier {
     NSData *data = [FHUserDefault objectForKey:identifier];
     NSKeyedUnarchiver *unarchive = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
