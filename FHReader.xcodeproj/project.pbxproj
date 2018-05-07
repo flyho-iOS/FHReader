@@ -31,6 +31,7 @@
 		4FA2ED43205BC2DB00E2199E /* Content.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2ED42205BC2DB00E2199E /* Content.json */; };
 		4FA2ED4C205BC47200E2199E /* NSObject+YYModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2ED48205BC47200E2199E /* NSObject+YYModel.m */; };
 		4FA2ED4D205BC47200E2199E /* YYClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2ED4A205BC47200E2199E /* YYClassInfo.m */; };
+		4FAF52DE20A0408500D6E8C5 /* FHDrawerCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAF52DD20A0408500D6E8C5 /* FHDrawerCache.m */; };
 		67DB6A8D205E57760016ABEB /* FHHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 67DB6A8C205E57760016ABEB /* FHHelper.m */; };
 		67DB6A912061347F0016ABEB /* FHPaginateContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 67DB6A902061347F0016ABEB /* FHPaginateContent.m */; };
 		67DB6A9420627E580016ABEB /* FHReadPageDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 67DB6A9320627E580016ABEB /* FHReadPageDrawer.m */; };
@@ -89,6 +90,8 @@
 		4FA2ED49205BC47200E2199E /* YYClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYClassInfo.h; sourceTree = "<group>"; };
 		4FA2ED4A205BC47200E2199E /* YYClassInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYClassInfo.m; sourceTree = "<group>"; };
 		4FA2ED4B205BC47200E2199E /* YYModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYModel.h; sourceTree = "<group>"; };
+		4FAF52DC20A0408500D6E8C5 /* FHDrawerCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FHDrawerCache.h; sourceTree = "<group>"; };
+		4FAF52DD20A0408500D6E8C5 /* FHDrawerCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FHDrawerCache.m; sourceTree = "<group>"; };
 		67DB6A8B205E57760016ABEB /* FHHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FHHelper.h; sourceTree = "<group>"; };
 		67DB6A8C205E57760016ABEB /* FHHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FHHelper.m; sourceTree = "<group>"; };
 		67DB6A8F2061347F0016ABEB /* FHPaginateContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHPaginateContent.h; sourceTree = "<group>"; };
@@ -167,6 +170,8 @@
 				4FA2ECBB205BAFA900E2199E /* FHParserUtil.m */,
 				4FA2ECB8205BAFA900E2199E /* FHFrameConstructor.h */,
 				4FA2ECB9205BAFA900E2199E /* FHFrameConstructor.m */,
+				4FAF52DC20A0408500D6E8C5 /* FHDrawerCache.h */,
+				4FAF52DD20A0408500D6E8C5 /* FHDrawerCache.m */,
 				67DB6A9220627E570016ABEB /* FHReadPageDrawer.h */,
 				67DB6A9320627E580016ABEB /* FHReadPageDrawer.m */,
 			);
@@ -390,6 +395,7 @@
 				4FA2ED17205BAFA900E2199E /* FHFrameConstructor.m in Sources */,
 				4FA2ED4C205BC47200E2199E /* NSObject+YYModel.m in Sources */,
 				67DB6A912061347F0016ABEB /* FHPaginateContent.m in Sources */,
+				4FAF52DE20A0408500D6E8C5 /* FHDrawerCache.m in Sources */,
 				4FA2ED39205BAFA900E2199E /* FHBackViewController.m in Sources */,
 				67DB6A992063DB320016ABEB /* FHReaderBar.m in Sources */,
 				4FA2ED4D205BC47200E2199E /* YYClassInfo.m in Sources */,

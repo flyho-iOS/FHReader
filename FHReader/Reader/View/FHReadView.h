@@ -20,6 +20,6 @@
 
 @property (nonatomic,weak) id<FHReadViewDataSource> dataSource;
 
-- (void)redraw;
+- (void)drawReadView;
 
 @end

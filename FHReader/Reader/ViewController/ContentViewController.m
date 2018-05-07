@@ -37,7 +37,7 @@
 
 #pragma mark -
 - (void)redrawReadPage {
-    [self.readView redraw];
+    [self.readView drawReadView];
 }
 
 - (void)changeThemeWithColor:(UIColor *)color {
@@ -63,6 +63,7 @@
         _readView = [[FHReadView alloc] initWithFrame:self.view.bounds];
         _readView.backgroundColor = [FHReadConfig shareConfiguration].themeColor;
         _readView.dataSource = self;
+        [_readView drawReadView];
     }
     return _readView;
 }

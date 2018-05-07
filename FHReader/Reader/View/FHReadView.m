@@ -11,6 +11,7 @@
 #import "FHFrameConstructor.h"
 #import "FHReadConfig.h"
 #import "AppDefine.h"
+#import "FHDrawerCache.h"
 
 @interface FHReadView ()
 
@@ -20,7 +21,14 @@
 
 @end
 
-@implementation FHReadView
+@implementation FHReadView {
+    
+    struct {
+        unsigned chapterTitle : 1;
+        unsigned chapterReadProgress : 1;
+        unsigned chapterContent : 1;
+    }dataSourceHas;
+}
 
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
@@ -42,32 +50,41 @@
     return self;
 }
 
-- (void)redraw {
-    self.drawer = [FHFrameConstructor parseContent:[_dataSource chapterContent]
-                                            config:[FHReadConfig shareConfiguration]
-                                            bounds:ReadPageRect];
-    [self setNeedsDisplay];
+- (void)drawReadView {
+    
     //刷新页面顶部标题和阅读进度
-    if (_dataSource && [_dataSource respondsToSelector:@selector(chapterTitle)]) {
+    if (dataSourceHas.chapterTitle) {
         self.titleLb.text = [_dataSource chapterTitle];
     }
-    if (_dataSource && [_dataSource respondsToSelector:@selector(chapterReadProgress)]) {
+    if (dataSourceHas.chapterReadProgress) {
         self.progressLb.text = [_dataSource chapterReadProgress];
+    }
+    if (dataSourceHas.chapterContent) {
+        NSString *key = [NSString stringWithFormat:@"ReadDrawerCache%@--%@",self.titleLb.text,self.progressLb.text];
+        FHReadPageDrawer *drawer = [[FHDrawerCache shareInstance] getDrawerWithIdentifier:key];
+        if (drawer)
+        {
+            self.drawer = drawer;
+        }
+        else
+        {
+            self.drawer = [FHFrameConstructor parseContent:[_dataSource chapterContent]
+                                                    config:[FHReadConfig shareConfiguration]
+                                                    bounds:ReadPageRect];
+            [[FHDrawerCache shareInstance] cacheDrawer:self.drawer
+                                        WithIdentifier:key];
+        }
+        [self setNeedsDisplay];
     }
 }
 
 #pragma mark - setter
 - (void)setDataSource:(id<FHReadViewDataSource>)dataSource {
     _dataSource = dataSource;
-    if (_dataSource && [_dataSource respondsToSelector:@selector(chapterTitle)]) {
-        self.titleLb.text = [_dataSource chapterTitle];
-    }
-    if (_dataSource && [_dataSource respondsToSelector:@selector(chapterReadProgress)]) {
-        self.progressLb.text = [_dataSource chapterReadProgress];
-    }
-    if (_dataSource && [_dataSource respondsToSelector:@selector(chapterContent)]) {
-        self.drawer = [FHFrameConstructor parseContent:[_dataSource chapterContent] config:[FHReadConfig shareConfiguration] bounds:ReadPageRect];
-    }
+    
+    dataSourceHas.chapterTitle = [_dataSource respondsToSelector:@selector(chapterTitle)];
+    dataSourceHas.chapterReadProgress = [_dataSource respondsToSelector:@selector(chapterReadProgress)];
+    dataSourceHas.chapterContent = [_dataSource respondsToSelector:@selector(chapterContent)];
 }
 
 #pragma mark - getter
