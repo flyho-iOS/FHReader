@@ -18,9 +18,39 @@
 @implementation FHPageViewController
 
 + (FHPageViewController *)configPageViewController {
-    UIPageViewControllerTransitionStyle style = UIPageViewControllerTransitionStylePageCurl;
-    UIPageViewControllerNavigationOrientation orientation = UIPageViewControllerNavigationOrientationHorizontal;
-    NSString *key = style == UIPageViewControllerTransitionStylePageCurl ? UIPageViewControllerOptionSpineLocationKey: UIPageViewControllerOptionInterPageSpacingKey;
+//    UIPageViewControllerTransitionStyle style = UIPageViewControllerTransitionStylePageCurl;
+//    UIPageViewControllerNavigationOrientation orientation = UIPageViewControllerNavigationOrientationHorizontal;
+//    NSString *key = style == UIPageViewControllerTransitionStylePageCurl ? UIPageViewControllerOptionSpineLocationKey: UIPageViewControllerOptionInterPageSpacingKey;
+//    NSDictionary *options = @{key : @(UIPageViewControllerSpineLocationNone)};
+    
+    UIPageViewControllerTransitionStyle style;
+    UIPageViewControllerNavigationOrientation orientation;
+    NSString *key ;
+    
+    switch ([FHReadConfig shareConfiguration].style) {
+        case FHReadPageTransitionStylePageCurl:
+            style = UIPageViewControllerTransitionStylePageCurl;
+            orientation = UIPageViewControllerNavigationOrientationHorizontal;
+            key = UIPageViewControllerOptionSpineLocationKey;
+            break;
+        case FHReadPageTransitionStyleScrollVertical:
+            style = UIPageViewControllerTransitionStyleScroll;
+            orientation = UIPageViewControllerNavigationOrientationVertical;
+            key = UIPageViewControllerOptionInterPageSpacingKey;
+            break;
+        case FHReadPageTransitionStyleScrollHorizontal:
+            style = UIPageViewControllerTransitionStyleScroll;
+            orientation = UIPageViewControllerNavigationOrientationHorizontal;
+            key = UIPageViewControllerOptionInterPageSpacingKey;
+            break;
+        case FHReadPageTransitionStyleNone:
+            style = UIPageViewControllerTransitionStylePageCurl;
+            orientation = UIPageViewControllerNavigationOrientationHorizontal;
+            key = UIPageViewControllerOptionSpineLocationKey;
+            break;
+        default:
+            break;
+    }
     NSDictionary *options = @{key : @(UIPageViewControllerSpineLocationNone)};
     return [[self alloc] initWithTransitionStyle:style
                            navigationOrientation:orientation

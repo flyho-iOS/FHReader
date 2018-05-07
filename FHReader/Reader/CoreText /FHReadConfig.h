@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger , FHReadPageTransitionStyle) {
-    FHREeadPageTransitionStylePageCurl = 0, //翻页
-    FHREeadPageTransitionStyleScrollHorizontal, //水平滚动
-    FHREeadPageTransitionStyleScrollVertical, //垂直滚动
-    FHREeadPageTransitionStyleNone //无动画
+    FHReadPageTransitionStylePageCurl = 0, //翻页
+    FHReadPageTransitionStyleScrollHorizontal, //水平滚动
+    FHReadPageTransitionStyleScrollVertical, //垂直滚动
+    FHReadPageTransitionStyleNone //无动画
 };
 
 @interface FHReadConfig : NSObject <NSCoding>

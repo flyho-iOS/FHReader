@@ -12,6 +12,12 @@
 #import "FHBackViewController.h"
 #import "FHReadContent.h"
 #import "FHReaderBar.h"
+#import "FHDrawerCache.h"
+
+typedef NS_ENUM(NSInteger, FHContentSource) {
+    FHContentSourceLocal,
+    FHContentSourceServer
+};
 
 @interface FHReadPageViewController () <UIPageViewControllerDelegate,UIPageViewControllerDataSource,FHReaderBarDelegate>
 {
@@ -36,17 +42,27 @@
 
 - (instancetype)initWithContentPath:(NSString *)contentPath {
     if (self = [super init]) {
-        [self addChildViewController:self.pageViewController];
-        [self.view addSubview:self.pageViewController.view];
         _content = [FHReadContent createContentWithFile:contentPath];
-        FHPaginateContent *pc = _content.paginateContents[_currentPaginateNo];
-        ContentViewController *contentVC = [ContentViewController createPageWithContent:pc];
-        _fontVC = contentVC;
-        [_pageViewController setViewControllers:@[contentVC] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-        [self.view addSubview:self.readerToolBar];
     }
     return self;
 }
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self addChildViewController:self.pageViewController];
+    [self.view addSubview:self.pageViewController.view];
+    [self requestData];
+    FHPaginateContent *pc = _content.paginateContents[_currentPaginateNo];
+    ContentViewController *contentVC = [ContentViewController createPageWithContent:pc];
+    _fontVC = contentVC;
+    [_pageViewController setViewControllers:@[contentVC] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+    [self.view addSubview:self.readerToolBar];
+}
+
+- (void)requestData {
+    
+}
+
 #pragma mark - statusBar
 - (BOOL)prefersStatusBarHidden {
     return self.readerToolBar.isHidden;
@@ -135,6 +151,7 @@
 - (void)readerBarDidChangeFontSize {
     [self.content collectPaginateChapters];
     [self.content updateContent];
+    [[FHDrawerCache shareInstance] clearDrawerCache];
     
     if (_currentPaginateNo >= self.content.paginateContents.count-1) {
         _currentPaginateNo = self.content.paginateContents.count-1;
