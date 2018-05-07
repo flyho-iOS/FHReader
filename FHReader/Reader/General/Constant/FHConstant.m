@@ -10,6 +10,4 @@
 
 @implementation FHConstant
 
-NSString * const FHReadPageTransitionStyleKey = @"FHReadPageTransitionStyleKey";
-
 @end

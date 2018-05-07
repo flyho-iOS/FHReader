@@ -47,7 +47,7 @@ static NSString *const FHContentCache = @"FHContentCache";
 }
 
 - (NSArray *)paginateContentsForChapter:(FHChapter *)chapter {
-    FHReadConfig *config = [FHReadConfig getConfig];
+    FHReadConfig *config = [FHReadConfig shareConfiguration];
     NSArray *pageContent = [FHFrameConstructor paginateContent:chapter.content WithConfig:config withBounds:ReadPageRect];
     NSMutableArray<FHPaginateContent *> *paginateContents = [NSMutableArray array];
     for (int i = 0; i < pageContent.count; i ++) {

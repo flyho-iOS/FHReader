@@ -44,7 +44,7 @@
 
 - (void)redraw {
     self.drawer = [FHFrameConstructor parseContent:[_dataSource chapterContent]
-                                            config:[FHReadConfig getConfig]
+                                            config:[FHReadConfig shareConfiguration]
                                             bounds:ReadPageRect];
     [self setNeedsDisplay];
     //刷新页面顶部标题和阅读进度
@@ -66,7 +66,7 @@
         self.progressLb.text = [_dataSource chapterReadProgress];
     }
     if (_dataSource && [_dataSource respondsToSelector:@selector(chapterContent)]) {
-        self.drawer = [FHFrameConstructor parseContent:[_dataSource chapterContent] config:[FHReadConfig getConfig] bounds:ReadPageRect];
+        self.drawer = [FHFrameConstructor parseContent:[_dataSource chapterContent] config:[FHReadConfig shareConfiguration] bounds:ReadPageRect];
     }
 }
 

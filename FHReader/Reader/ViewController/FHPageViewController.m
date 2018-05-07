@@ -29,7 +29,7 @@
 
 - (instancetype)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style navigationOrientation:(UIPageViewControllerNavigationOrientation)navigationOrientation options:(NSDictionary<NSString *,id> *)options {
     if (self = [super initWithTransitionStyle:style navigationOrientation:navigationOrientation options:options]) {
-        self.view.backgroundColor = [FHReadConfig getConfig].themeColor;
+        self.view.backgroundColor = [FHReadConfig shareConfiguration].themeColor;
         [self fixGestureConflict];
     }
     return self;

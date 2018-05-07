@@ -9,7 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface FHConstant : NSObject
-/****** 翻页效果cache key ********/
-extern NSString * const FHReadPageTransitionStyleKey;
 
 @end

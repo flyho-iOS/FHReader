@@ -27,7 +27,7 @@
         UIView *backView =  [[NSBundle mainBundle] loadNibNamed:@"FHReaderBar"owner:self options:nil].firstObject;
         backView.frame = frame;
         [self addSubview:backView];
-        self.fontSizeLb.text = [NSString stringWithFormat:@"%d",(int)[FHReadConfig getConfig].fontSize];
+        self.fontSizeLb.text = [NSString stringWithFormat:@"%d",(int)[FHReadConfig shareConfiguration].fontSize];
     }
     return self;
 }
@@ -53,24 +53,22 @@
 }
 
 - (IBAction)fontReduce:(id)sender {
-    FHReadConfig *config = [FHReadConfig getConfig];
+    FHReadConfig *config = [FHReadConfig shareConfiguration];
     config.fontSize --;
     
     if (config.fontSize < FONT_MIN) return;
     
     self.fontSizeLb.text = [NSString stringWithFormat:@"%d",(int)config.fontSize];
-    [config updateCacheConfig];
     [self chageFontSize];
 }
 
 - (IBAction)fontIncrease:(id)sender {
-    FHReadConfig *config = [FHReadConfig getConfig];
+    FHReadConfig *config = [FHReadConfig shareConfiguration];
     config.fontSize ++;
     
     if (config.fontSize > FONT_MAX) return;
     
     self.fontSizeLb.text = [NSString stringWithFormat:@"%d",(int)config.fontSize];
-    [config updateCacheConfig];
     [self chageFontSize];
 }
 - (IBAction)changeThemeColor:(id)sender {
@@ -78,9 +76,8 @@
     if (_delegate && [_delegate respondsToSelector:@selector(readerBarDidClickThemeColor:)]) {
         [_delegate readerBarDidClickThemeColor:button.backgroundColor];
     }    
-    FHReadConfig *config = [FHReadConfig getConfig];
+    FHReadConfig *config = [FHReadConfig shareConfiguration];
     config.themeColor = button.backgroundColor;
-    [config updateCacheConfig];
 }
 
 #pragma mark -

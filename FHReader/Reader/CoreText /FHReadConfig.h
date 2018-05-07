@@ -11,31 +11,25 @@
 typedef NS_ENUM(NSInteger , FHReadPageTransitionStyle) {
     FHREeadPageTransitionStylePageCurl = 0, //翻页
     FHREeadPageTransitionStyleScrollHorizontal, //水平滚动
-    FHREeadPageTransitionStyleScrollVertical //垂直滚动
+    FHREeadPageTransitionStyleScrollVertical, //垂直滚动
+    FHREeadPageTransitionStyleNone //无动画
 };
 
 @interface FHReadConfig : NSObject <NSCoding>
 
-@property (nonatomic,strong) UIColor *fontColor;
 /** 主题背景色 */
 @property (nonatomic,strong) UIColor *themeColor;
 /** 行距 */
 @property (nonatomic,assign) CGFloat lineSpace;
 /** 字体大小 */
 @property (nonatomic,assign) CGFloat fontSize;
+/** 字体颜色 */
+@property (nonatomic,strong) UIColor *fontColor;
 /** 字体 */
 @property (nonatomic,copy) NSString *fontName;
 /** 翻页动画 */
 @property (nonatomic,assign) FHReadPageTransitionStyle style;
 
-/**
- *  更新缓存配置参数
- */
-- (void)updateCacheConfig;
-/**
- *  获取配置参数
- *  @return FHReadConfig  配置参数
- */
-+ (FHReadConfig *)getConfig;
++ (instancetype)shareConfiguration;
 
 @end

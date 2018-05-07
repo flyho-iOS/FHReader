@@ -61,7 +61,7 @@
 - (FHReadView *)readView {
     if (!_readView) {
         _readView = [[FHReadView alloc] initWithFrame:self.view.bounds];
-        _readView.backgroundColor = [FHReadConfig getConfig].themeColor;
+        _readView.backgroundColor = [FHReadConfig shareConfiguration].themeColor;
         _readView.dataSource = self;
     }
     return _readView;

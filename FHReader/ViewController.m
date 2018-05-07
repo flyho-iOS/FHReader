@@ -28,7 +28,6 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     FHReadPageViewController *readPageVC = [FHReadPageViewController createReaderWithContentPath:@"Content.json"];
-//    [self.navigationController pushViewController:readPageVC animated:YES];
     [self presentViewController:readPageVC animated:YES completion:nil];
 }
 

@@ -9,26 +9,48 @@
 #import "FHReadConfig.h"
 
 static NSString *const ConfigCacheKey = @"ConfigCacheKey";
+static NSString * const FHReadPageTransitionStyleKey = @"FHReadPageTransitionStyleKey";
+static FHReadConfig *config = nil;
+
+@interface FHReadConfig ()
+
+@end
 
 @implementation FHReadConfig 
 
 #pragma mark - initialize
++ (instancetype)shareConfiguration {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        config = [[self alloc] init];
+    });
+    return config;
+}
 
-+ (FHReadConfig *)getConfig {
-    return [[self alloc] init];
++ (instancetype)allocWithZone:(struct _NSZone *)zone {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        config = [super allocWithZone:NULL];
+    });
+    return config;
+}
+
+- (void)defaultConfiguration {
+    _themeColor = [UIColor colorWithRed:226.0/255.0 green:204.0/255.0 blue:169.0/225.0 alpha:1.0];
+    _fontSize = 18;
+    _fontColor = [UIColor blackColor];
+    _lineSpace = 0.5f;
+    _style = FHREeadPageTransitionStylePageCurl;
+    _fontName = @"ArialMT";
 }
 
 - (instancetype)init {
-    FHReadConfig *config = [FHReadConfig getCacheConfig];
-    if (config) {
-        return config;
+    FHReadConfig *configuration = [FHReadConfig getCacheConfig];
+    if (configuration) {
+        return configuration;
     }
     if (self = [super init]) {
-        _themeColor = [UIColor colorWithRed:226.0/255.0 green:204.0/255.0 blue:169.0/225.0 alpha:1.0];
-        _fontSize = 18;
-        _lineSpace = 0.5f;
-        _style = FHREeadPageTransitionStylePageCurl;
-        [self updateCacheConfig];
+        [self defaultConfiguration];
     }
     return self;
 }
@@ -56,9 +78,9 @@ static NSString *const ConfigCacheKey = @"ConfigCacheKey";
 
 #pragma mark - cache
 - (void)updateCacheConfig {
-    NSMutableData *data = [[NSMutableData alloc]init];
+    NSMutableData *data = [[NSMutableData alloc] init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-    [archiver encodeObject:self forKey:ConfigCacheKey];
+    [archiver encodeObject:config forKey:ConfigCacheKey];
     [archiver finishEncoding];
     [FHUserDefault setObject:data forKey:ConfigCacheKey];
     [FHUserDefault synchronize];
@@ -68,6 +90,32 @@ static NSString *const ConfigCacheKey = @"ConfigCacheKey";
     NSData *data = [FHUserDefault objectForKey:ConfigCacheKey];
     NSKeyedUnarchiver *unarchive = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
     return [unarchive decodeObjectForKey:ConfigCacheKey];
+}
+
+#pragma mark - setter
+- (void)setLineSpace:(CGFloat)lineSpace {
+    _lineSpace = lineSpace;
+    [self updateCacheConfig];
+}
+
+- (void)setThemeColor:(UIColor *)themeColor {
+    _themeColor = themeColor;
+    [self updateCacheConfig];
+}
+
+- (void)setStyle:(FHReadPageTransitionStyle)style {
+    _style = style;
+    [self updateCacheConfig];
+}
+
+- (void)setFontName:(NSString *)fontName {
+    _fontName = fontName;
+    [self updateCacheConfig];
+}
+
+- (void)setFontSize:(CGFloat)fontSize {
+    _fontSize = fontSize;
+    [self updateCacheConfig];
 }
 
 @end
