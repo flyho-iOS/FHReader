@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, FHContentSource) {
+    FHContentSourceLocal,
+    FHContentSourceOnline
+};
+
 @interface FHReadPageViewController : UIViewController
+
+@property (nonatomic,assign) NSInteger bookId;
+@property (nonatomic,assign) BOOL isContinue;
 
 + (instancetype)createReaderWithContentPath:(NSString *)contentPath;
 

@@ -17,7 +17,7 @@
                                         pageNo:(NSInteger)pageNo {
     return [[self alloc] initWithTitle:title
                                Content:content
-                             totalPage:(NSInteger)totalPage
+                             totalPage:totalPage
                              chapterNo:chapterNo
                                 pageNo:pageNo];
 }

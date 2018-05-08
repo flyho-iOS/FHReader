@@ -9,10 +9,20 @@
 #import <Foundation/Foundation.h>
 #import "FHChapter.h"
 
-@interface FHRecord : NSObject
+@interface FHRecord : NSObject <NSCoding>
 
-@property (nonatomic,strong) FHChapter *chapter;
+//@property (nonatomic,strong) FHChapter *chapter;
 
-@property (nonatomic,assign) NSInteger recordPage;
+@property (nonatomic,assign) NSInteger bookId;
+
+@property (nonatomic,assign) NSInteger recordPage_ch;
+
+@property (nonatomic,assign) NSInteger recordPage_to;
+
+@property (nonatomic,assign) NSInteger chapterNo;
+
+- (void)updateRecord;
+
++ (FHRecord *)getRecordWithBookId:(NSInteger)bookId;
 
 @end

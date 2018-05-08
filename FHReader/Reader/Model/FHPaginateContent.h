@@ -10,10 +10,15 @@
 
 @interface FHPaginateContent : NSObject <NSCoding>
 
+/** 标题 */
 @property (nonatomic,copy)   NSString *title;
+/** 分页内容 */
 @property (nonatomic,copy)   NSString *content;
+/** 总页数 */
 @property (nonatomic,assign) NSInteger totalPage;
+/** 章节序号 */
 @property (nonatomic,assign) NSInteger chapterNo;
+/** 页码 */
 @property (nonatomic,assign) NSInteger pageNo;
 
 + (instancetype)createPaginateContentWithTitle:(NSString *)title

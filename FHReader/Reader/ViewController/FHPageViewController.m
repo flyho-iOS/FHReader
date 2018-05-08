@@ -18,10 +18,6 @@
 @implementation FHPageViewController
 
 + (FHPageViewController *)configPageViewController {
-//    UIPageViewControllerTransitionStyle style = UIPageViewControllerTransitionStylePageCurl;
-//    UIPageViewControllerNavigationOrientation orientation = UIPageViewControllerNavigationOrientationHorizontal;
-//    NSString *key = style == UIPageViewControllerTransitionStylePageCurl ? UIPageViewControllerOptionSpineLocationKey: UIPageViewControllerOptionInterPageSpacingKey;
-//    NSDictionary *options = @{key : @(UIPageViewControllerSpineLocationNone)};
     
     UIPageViewControllerTransitionStyle style;
     UIPageViewControllerNavigationOrientation orientation;

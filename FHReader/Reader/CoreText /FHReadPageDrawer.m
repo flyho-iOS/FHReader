@@ -1,6 +1,3 @@
-
-
-
 //
 //  FHReadPageDrawer.m
 //  FHReader
