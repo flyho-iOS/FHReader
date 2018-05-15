@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "FHContentSourceProtocol.h"
+#import "FHReadContent.h"
 
 @interface FHBaseSourceManager : NSObject <FHContentSourceProtocol>
+
 
 @end

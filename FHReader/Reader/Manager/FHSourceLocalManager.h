@@ -9,6 +9,7 @@
 #import "FHBaseSourceManager.h"
 #import "FHContentSourceProtocol.h"
 
-@interface FHSourceLocalManager : FHBaseSourceManager
+@interface FHSourceLocalManager : FHBaseSourceManager 
+
 
 @end

@@ -20,4 +20,7 @@
 
 #define FHDeallocLog() NSLog(@"dealloc --> %@ <%p>",[self class],self);
 
+
+#define FHRecordKey(bookId) [NSString stringWithFormat:@"Record---%ld",bookId]
+
 #endif /* AppDefine_h */

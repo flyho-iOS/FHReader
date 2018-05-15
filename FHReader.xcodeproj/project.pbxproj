@@ -43,6 +43,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F2598C020AA75560001EDAC /* FHManagerHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FHManagerHeader.h; sourceTree = "<group>"; };
 		4FA2EC9D205BAF2B00E2199E /* FHReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FHReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA2ECA0205BAF2B00E2199E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4FA2ECA1205BAF2B00E2199E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -314,6 +315,7 @@
 		4FAF52DF20A1461C00D6E8C5 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				4F2598C020AA75560001EDAC /* FHManagerHeader.h */,
 				4FAF52E020A1469300D6E8C5 /* FHContentSourceProtocol.h */,
 				4FAF52E720A1522800D6E8C5 /* FHBaseSourceManager.h */,
 				4FAF52E820A1522800D6E8C5 /* FHBaseSourceManager.m */,

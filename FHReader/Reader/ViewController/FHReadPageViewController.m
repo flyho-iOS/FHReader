@@ -14,6 +14,7 @@
 #import "FHReaderBar.h"
 #import "FHDrawerCache.h"
 #import "FHContentSourceProtocol.h"
+#import "FHSourceLocalManager.h"
 
 @interface FHReadPageViewController () <UIPageViewControllerDelegate,UIPageViewControllerDataSource,FHReaderBarDelegate>
 {
@@ -55,17 +56,22 @@
 
 - (void)requestData {
     
-    FHRecord *record = [FHRecord getRecordWithBookId:self.bookId];
-    if (record) {
-        _currentPaginateNo = record.recordPage_to;
-    }else {
-        _currentPaginateNo = 0;
-    }
-    FHPaginateContent *pc = _content.paginateContents[_currentPaginateNo];
-    ContentViewController *contentVC = [ContentViewController createPageWithContent:pc];
-    _frontVC = contentVC;
-    [_pageViewController setViewControllers:@[contentVC] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+    self.manager = [FHSourceLocalManager new];
+    
+    [self.manager fetchContentWithBookId:self.bookId success:^(FHReadContent *contents) {
+        
+        _content = contents;
+        FHPaginateContent *pc = _content.paginateContents[_content.record.recordPage_to];
+        ContentViewController *contentVC = [ContentViewController createPageWithContent:pc];
+        _frontVC = contentVC;
+        [_pageViewController setViewControllers:@[contentVC] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+        
+    } andFailure:^(NSString *errorMsg) {
+        
+    }];
 }
+
+
 
 #pragma mark - statusBar
 - (BOOL)prefersStatusBarHidden {
@@ -103,12 +109,12 @@
         if (_currentPaginateNo > _content.paginateContents.count-1) _currentPaginateNo = _content.paginateContents.count-1;
         
         NSLog(@"第%ld章,第%ld页,共%ld页,第%ld页",[_content.paginateContents[_currentPaginateNo] chapterNo]+1,[_content.paginateContents[_currentPaginateNo] pageNo]+1,_content.paginateContents.count,_currentPaginateNo+1);
-        FHRecord *record = [FHRecord new];
-        record.bookId = self.bookId;
-        record.chapterNo = [_content.paginateContents[_currentPaginateNo] chapterNo];
-        record.recordPage_ch = [_content.paginateContents[_currentPaginateNo] pageNo];
-        record.recordPage_to = _currentPaginateNo;
-        [record updateRecord];
+//        FHRecord *record = [FHRecord new];
+//        record.bookId = self.bookId;
+//        record.chapterNo = [_content.paginateContents[_currentPaginateNo] chapterNo];
+//        record.recordPage_ch = [_content.paginateContents[_currentPaginateNo] pageNo];
+//        record.recordPage_to = _currentPaginateNo;
+//        [record updateRecord];
     }
     // 翻页完成后开启交互，防止翻页过快导致页码定位错误
     if (finished && self.pageViewController.transitionStyle == UIPageViewControllerTransitionStylePageCurl) {

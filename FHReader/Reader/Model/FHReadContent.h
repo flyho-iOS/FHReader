@@ -17,7 +17,7 @@
 @interface FHReadContent : NSObject <NSCoding>
 
 /** 书籍标识，这里用文件名，严格设计应该赋予唯一标识 */
-@property (nonatomic,copy) NSString *identifier;
+@property (nonatomic,assign) NSInteger identifier;
 /** 笔记 */
 @property (nonatomic,copy) NSArray<FHNote *> *notes;
 /** 书签 */

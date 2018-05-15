@@ -15,6 +15,8 @@
 
 @property (nonatomic,assign) NSInteger bookId;
 
+@property (nonatomic,assign) NSInteger chapterId;
+
 @property (nonatomic,assign) NSInteger recordPage_ch;
 
 @property (nonatomic,assign) NSInteger recordPage_to;

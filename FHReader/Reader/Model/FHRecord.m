@@ -7,6 +7,7 @@
 //
 
 #import "FHRecord.h"
+#import "AppDefine.h"
 
 @implementation FHRecord
 
@@ -30,16 +31,16 @@
 - (void)updateRecord {
     NSMutableData *data = [[NSMutableData alloc]init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-    [archiver encodeObject:self forKey:[NSString stringWithFormat:@"%ld",self.bookId]];
+    [archiver encodeObject:self forKey:FHRecordKey(self.bookId)];
     [archiver finishEncoding];
     [FHUserDefault setObject:data forKey:[NSString stringWithFormat:@"%ld",self.bookId]];
     [FHUserDefault synchronize];
 }
 
 + (FHRecord *)getRecordWithBookId:(NSInteger)bookId {
-    NSData *data = [FHUserDefault objectForKey:[NSString stringWithFormat:@"%ld",bookId]];
+    NSData *data = [FHUserDefault objectForKey:FHRecordKey(bookId)];
     NSKeyedUnarchiver *unarchive = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-    return [unarchive decodeObjectForKey:[NSString stringWithFormat:@"%ld",bookId]];
+    return [unarchive decodeObjectForKey:FHRecordKey(bookId)];
 }
 
 @end

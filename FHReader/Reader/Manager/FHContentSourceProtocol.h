@@ -7,11 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
-
-typedef void(^FetchContentHandler)(NSArray *chapters, NSError *error);
+#import "FHReadContent.h"
+#import "FHManagerHeader.h"
 
 @protocol FHContentSourceProtocol <NSObject>
 
-- (void)fetchContentWithBookId:(NSInteger)bookId complete:(FetchContentHandler)fetchHandler;
+@required
+
+/** 书id */
+@property (nonatomic,assign) NSInteger bookId;
+/** 当前页码 */
+@property (nonatomic,assign,readonly) NSInteger currentPageNo;
+/** 书籍所有信息 */
+@property (nonatomic,strong) FHReadContent *contents;
+
+- (void)fetchContentWithBookId:(NSInteger)bookId success:(FetchContentSuccess)fetchSuccess andFailure:(FetchContentFailure)fetchFail;
+
+- (void)saveReadRecord;
 
 @end

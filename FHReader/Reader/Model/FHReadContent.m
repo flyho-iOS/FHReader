@@ -26,8 +26,9 @@ static NSString *const FHContentCache = @"FHContentCache";
         return content;
     }
     if (self = [super init]) {
-        _identifier = fileName;
+//        _identifier = fileName;
         _chapters = [FHParserUtil parserFileToChapter:fileName];
+        _record = [FHRecord getRecordWithBookId:self.identifier];
         [self collectPaginateChapters];
         [self updateContent];
     }
@@ -71,14 +72,15 @@ static NSString *const FHContentCache = @"FHContentCache";
 - (void)updateContent {
     NSMutableData *data = [[NSMutableData alloc]init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-    [archiver encodeObject:self forKey:self.identifier];
+    NSString *key = [NSString stringWithFormat:@"%ld",self.identifier];
+    [archiver encodeObject:self forKey:key];
     [archiver finishEncoding];
-    [FHUserDefault setObject:data forKey:self.identifier];
+    [FHUserDefault setObject:data forKey:key];
     [FHUserDefault synchronize];
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:self.identifier forKey:@"identifier"];
+    [aCoder encodeObject:@(self.identifier) forKey:@"identifier"];
     [aCoder encodeObject:self.notes forKey:@"notes"];
     [aCoder encodeObject:self.marks forKey:@"marks"];
     [aCoder encodeObject:self.chapters forKey:@"chapters"];
@@ -88,7 +90,7 @@ static NSString *const FHContentCache = @"FHContentCache";
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
-        self.identifier = [aDecoder decodeObjectForKey:@"identifier"];
+        self.identifier = [[aDecoder decodeObjectForKey:@"identifier"] integerValue];
         self.notes = [aDecoder decodeObjectForKey:@"notes"];
         self.marks = [aDecoder decodeObjectForKey:@"marks"];
         self.chapters = [aDecoder decodeObjectForKey:@"chapters"];

@@ -10,4 +10,8 @@
 
 @implementation FHBaseSourceManager
 
+- (void)fetchContentWithBookId:(NSInteger)bookId success:(FetchContentSuccess)fetchSuccess andFailure:(FetchContentFailure)fetchFail {
+    
+}
+
 @end
