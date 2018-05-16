@@ -11,6 +11,9 @@
 @interface FHBaseSourceManager ()
 {
     FHPaginateContent *_tempPage;
+    
+    NSInteger _currentChapterNo;
+    NSInteger _currentPageNo;
 }
 @end
 
@@ -18,39 +21,7 @@
 
 #pragma mark - FHContentSourceProtocol
 
-- (void)hasTurnLastPage {
-    if ([self isFirstChapter] && [self isFirstPage])
-    {
-        self.currentPaginate.chapterNo = 0;
-        self.currentPaginate.pageNo = 0;
-    }
-    else if (![self isFirstChapter] && [self isFirstPage])
-    {
-        self.currentPaginate.chapterNo --;
-        self.currentPaginate.pageNo = self.currentPaginate.totalPage - 1;
-    }
-    else
-    {
-        self.currentPaginate.pageNo --;
-    }
-    self.currentPaginate = _tempPage;
-}
-
-- (void)hasTurnNextPage {
-    if ([self isLastChapter] && [self isLastPage])
-    {
-        self.currentPaginate.chapterNo = self.contents.chapters.count - 1;
-        self.currentPaginate.pageNo = self.currentPaginate.totalPage - 1;
-    }
-    else if (![self isLastChapter] && [self isLastPage])
-    {
-        self.currentPaginate.chapterNo ++;
-        self.currentPaginate.pageNo = 0;
-    }
-    else
-    {
-        self.currentPaginate.pageNo ++;
-    }
+- (void)didFinishTurnPage {
     self.currentPaginate = _tempPage;
 }
 
@@ -86,8 +57,8 @@
     else if (![self isFirstChapter] && [self isFirstPage])
     {
         NSInteger chapterNo = self.currentPaginate.chapterNo - 1;
-        NSInteger pageNo = self.currentPaginate.totalPage - 1;
         NSDictionary *chapterDict = self.contents.chapters[FHChapterKey(chapterNo)];
+        NSInteger pageNo = chapterDict.count - 1;
         FHPaginateContent *page = chapterDict[FHPaginateKey(pageNo)];
 //        self.currentPaginate = page;
         _tempPage = page;
@@ -95,8 +66,8 @@
     }
     else
     {
-        NSInteger pageNo = self.currentPaginate.pageNo - 1;
         NSDictionary *chapterDict = self.contents.chapters[FHChapterKey(self.currentPaginate.chapterNo)];
+        NSInteger pageNo = self.currentPaginate.pageNo-1;
         FHPaginateContent *page = chapterDict[FHPaginateKey(pageNo)];
 //        self.currentPaginate = page;
         _tempPage = page;
@@ -130,7 +101,7 @@
 }
 
 - (BOOL)isLastChapter {
-    return self.currentPaginate.chapterNo == self.contents.chapters.count-1;
+    return _currentChapterNo == self.contents.chapters.count-1;
 }
 
 - (BOOL)isLastPage {

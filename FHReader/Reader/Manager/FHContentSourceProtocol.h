@@ -18,9 +18,7 @@
 
 - (void)saveReadRecord;
 
-- (void)hasTurnNextPage;
-
-- (void)hasTurnLastPage;
+- (void)didFinishTurnPage;
 
 - (FHPaginateContent *)currentPageContent;
 

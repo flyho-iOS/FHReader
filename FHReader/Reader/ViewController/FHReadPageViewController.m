@@ -91,18 +91,8 @@
 
 #pragma mark UIPageViewControllerDelegate
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
-    BOOL isSwipeForward = NO;
-    ContentViewController *preVC = (ContentViewController *)[previousViewControllers lastObject];
-    if ((preVC.paginateContent.chapterNo < _frontVC.paginateContent.chapterNo) || (preVC.paginateContent.chapterNo == _frontVC.paginateContent.chapterNo && preVC.paginateContent.pageNo < _frontVC.paginateContent.pageNo)) {
-        isSwipeForward = YES;
-    }
     if (finished && completed) { //翻页动画结束且已翻页
-        if (isSwipeForward) {
-            [self.manager hasTurnNextPage];
-        }else{
-            [self.manager hasTurnLastPage];
-        }
-
+        [self.manager didFinishTurnPage];
         [self.manager saveReadRecord];
     }
     // 翻页完成后开启交互，防止翻页过快导致页码定位错误

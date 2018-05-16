@@ -18,7 +18,7 @@
 
 - (instancetype)initWithBookId:(NSInteger)bookId {
     if (self = [super init]) {
-        
+        self.bookId = bookId;
     }
     return self;
 }
