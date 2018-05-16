@@ -20,7 +20,10 @@
 
 #define FHDeallocLog() NSLog(@"dealloc --> %@ <%p>",[self class],self);
 
-
+/****************** 书籍缓存key *****************8*/
 #define FHRecordKey(bookId) [NSString stringWithFormat:@"Record---%ld",bookId]
+#define FHReadContentKey(bookId) [NSString stringWithFormat:@"FHReadContentKey---%ld",bookId]
+#define FHChapterKey(chapterNo) [NSString stringWithFormat:@"FHChapter---%ld",chapterNo]
+#define FHPaginateKey(pageNo) [NSString stringWithFormat:@"FHPageNo--%ld",pageNo]
 
 #endif /* AppDefine_h */

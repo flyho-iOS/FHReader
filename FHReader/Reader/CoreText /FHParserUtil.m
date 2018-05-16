@@ -12,8 +12,9 @@
 
 @implementation FHParserUtil
 
-+ (NSArray<FHChapter *> *)parserFileToChapter:(NSString *)fileName {
++ (NSArray<FHChapter *> *)parserFileToChapter:(NSInteger)bookId {
     NSArray *chapters = nil;
+    NSString *fileName = [NSString stringWithFormat:@"%ld.json",bookId];
     if ([fileName.pathExtension isEqualToString:@"json"]) {
         NSString *jsonPath = [[NSBundle mainBundle] pathForResource:[fileName stringByDeletingLastPathComponent] ofType:[fileName pathExtension]];
         NSData *data = [[NSFileManager defaultManager] contentsAtPath:jsonPath];

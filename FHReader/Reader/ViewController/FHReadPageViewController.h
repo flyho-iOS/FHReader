@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, FHContentSource) {
 @property (nonatomic,assign) NSInteger bookId;
 @property (nonatomic,assign) BOOL isContinue;
 
-+ (instancetype)createReaderWithContentPath:(NSString *)contentPath;
++ (instancetype)createReaderWithBookId:(NSInteger)bookId;
 
 
 @end

@@ -15,13 +15,7 @@
 
 @property (nonatomic,assign) NSInteger bookId;
 
-@property (nonatomic,assign) NSInteger chapterId;
-
-@property (nonatomic,assign) NSInteger recordPage_ch;
-
-@property (nonatomic,assign) NSInteger recordPage_to;
-
-@property (nonatomic,assign) NSInteger chapterNo;
+@property (nonatomic,strong) FHPaginateContent *currentPaginate;
 
 - (void)updateRecord;
 

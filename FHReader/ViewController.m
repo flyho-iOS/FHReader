@@ -27,7 +27,7 @@
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    FHReadPageViewController *readPageVC = [FHReadPageViewController createReaderWithContentPath:@"Content.json"];
+    FHReadPageViewController *readPageVC = [FHReadPageViewController createReaderWithBookId:123456];
     [self presentViewController:readPageVC animated:YES completion:nil];
 }
 

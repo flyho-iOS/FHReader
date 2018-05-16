@@ -23,6 +23,7 @@
         self.title = [aDecoder decodeObjectForKey:@"title"];
         self.content = [aDecoder decodeObjectForKey:@"content"];
         self.startPageNo = [[aDecoder decodeObjectForKey:@"startPageNo"] integerValue];
+        self.chapterPaginates = [aDecoder decodeObjectForKey:@"chapterPaginates"];
     }
     return self;
 }
@@ -32,6 +33,7 @@
     [aCoder encodeObject:@(self.startPageNo) forKey:@"startPageNo"];
     [aCoder encodeObject:self.title forKey:@"title"];
     [aCoder encodeObject:self.content forKey:@"content"];
+    [aCoder encodeObject:self.chapterPaginates forKey:@"chapterPaginates"];
 }
 
 #pragma mark - setter

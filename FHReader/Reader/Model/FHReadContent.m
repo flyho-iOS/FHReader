@@ -11,71 +11,67 @@
 #import "FHPaginateContent.h"
 #import "FHReadConfig.h"
 #import "FHFrameConstructor.h"
+#import "AppDefine.h"
 
 static NSString *const FHContentCache = @"FHContentCache";
 
 @implementation FHReadContent
 
-+ (instancetype)createContentWithFile:(NSString *)fileName {
-    return [[self alloc] initWithFileName:fileName];
++ (instancetype)localContentWithIdentifer:(NSInteger)bookId {
+    return [[self alloc] initLocalWithIdentifer:bookId];
 }
 
-- (instancetype)initWithFileName:(NSString *)fileName {
-    FHReadContent *content = [FHReadContent getCacheContentWithIdentifier:fileName];
-    if (content) {
-        return content;
-    }
+- (instancetype)initLocalWithIdentifer:(NSInteger)bookId {
+//    FHReadContent *content = [FHReadContent getCacheContentWithIdentifier:bookId];
+//    if (content) {
+//        return content;
+//    }
     if (self = [super init]) {
-//        _identifier = fileName;
-        _chapters = [FHParserUtil parserFileToChapter:fileName];
-        _record = [FHRecord getRecordWithBookId:self.identifier];
+        _identifier = bookId;
         [self collectPaginateChapters];
-        [self updateContent];
+        
     }
     return self;
 }
 
 - (void)collectPaginateChapters {
-    int count = 0;
-    NSMutableArray<FHPaginateContent *> *pcs = [NSMutableArray array];
-    for (FHChapter *chapter in _chapters) {
-        NSArray *paginateContents = [self paginateContentsForChapter:chapter];
-        [pcs addObjectsFromArray:paginateContents];
-        chapter.startPageNo = count;
-        count += paginateContents.count;
+    NSMutableDictionary *pcs = [NSMutableDictionary dictionary];
+    NSArray<FHChapter *> *chapters = [FHParserUtil parserFileToChapter:_identifier];
+    for (FHChapter *chapter in chapters) {
+        // 每一章节全部分页内容
+        [pcs setObject:[self paginateContentsForChapter:chapter] forKey:FHChapterKey(chapter.chapterNo)];
     }
-    _paginateContents = [pcs copy];
+    _chapters = [pcs copy];
 }
-
-- (NSArray *)paginateContentsForChapter:(FHChapter *)chapter {
+// 把一个章节内容分页
+- (NSDictionary *)paginateContentsForChapter:(FHChapter *)chapter {
     FHReadConfig *config = [FHReadConfig shareConfiguration];
     NSArray *pageContent = [FHFrameConstructor paginateContent:chapter.content WithConfig:config withBounds:ReadPageRect];
-    NSMutableArray<FHPaginateContent *> *paginateContents = [NSMutableArray array];
-    for (int i = 0; i < pageContent.count; i ++) {
-        FHPaginateContent *pc =
-        [FHPaginateContent createPaginateContentWithTitle:chapter.title
-                                                  Content:pageContent[i]
-                                                totalPage:pageContent.count
-                                                chapterNo:chapter.chapterNo-1
-                                                   pageNo:i];
-        [paginateContents addObject:pc];
+    NSMutableDictionary<NSString *,FHPaginateContent *> *paginateContents = [NSMutableDictionary dictionary];
+    for (NSInteger i = 0; i < pageContent.count; i ++) {
+        FHPaginateContent *pc = [FHPaginateContent new];
+        pc.title = chapter.title;
+        pc.content = pageContent[i];
+        pc.totalPage = pageContent.count;
+        pc.chapterNo = chapter.chapterNo-1;
+        pc.pageNo = i;
+        [paginateContents setObject:pc forKey:FHPaginateKey(i)];
     }
     return paginateContents.copy;
 }
 
-+ (FHReadContent *)getCacheContentWithIdentifier:(NSString *)identifier {
-    NSData *data = [FHUserDefault objectForKey:identifier];
++ (FHReadContent *)getCacheContentWithIdentifier:(NSInteger)identifier {
+    NSData *data = [FHUserDefault objectForKey:FHReadContentKey(identifier)];
     NSKeyedUnarchiver *unarchive = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-    return [unarchive decodeObjectForKey:identifier];
+    return [unarchive decodeObjectForKey:FHReadContentKey(identifier)];
 }
 
 - (void)updateContent {
     NSMutableData *data = [[NSMutableData alloc]init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-    NSString *key = [NSString stringWithFormat:@"%ld",self.identifier];
-    [archiver encodeObject:self forKey:key];
+    [archiver encodeObject:self forKey:FHReadContentKey(self.identifier)];
     [archiver finishEncoding];
-    [FHUserDefault setObject:data forKey:key];
+    [FHUserDefault setObject:data forKey:FHReadContentKey(self.identifier)];
     [FHUserDefault synchronize];
 }
 
@@ -101,6 +97,10 @@ static NSString *const FHContentCache = @"FHContentCache";
 }
 
 #pragma mark - getter
+- (FHRecord *)record {
+    return [FHRecord getRecordWithBookId:self.identifier];
+}
+
 - (NSInteger)totalChapter {
     return _chapters.count;
 }

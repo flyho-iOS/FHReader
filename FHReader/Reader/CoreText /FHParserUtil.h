@@ -12,6 +12,6 @@
 
 @interface FHParserUtil : NSObject
 
-+ (NSArray<FHChapter *> *)parserFileToChapter:(NSString *)fileName;
++ (NSArray<FHChapter *> *)parserFileToChapter:(NSInteger)bookId;
 
 @end

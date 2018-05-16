@@ -23,7 +23,7 @@
 /** 书签 */
 @property (nonatomic,copy) NSArray<FHBookMark *> *marks;
 /** 章节 */
-@property (nonatomic,copy) NSArray<FHChapter *> *chapters;
+@property (nonatomic,copy) NSDictionary <NSString *,FHChapter *> *chapters;
 /** 所有章节所有分页 */
 @property (nonatomic,copy) NSArray<FHPaginateContent *> *paginateContents;
 /** 阅读记录 */
@@ -33,10 +33,10 @@
 
 /**
  *  创建内容模型
- *  @param  fileName  书籍文件名
+ *  @param  bookId  书籍id
  *  @return FHReadContent  内容模型
  */
-+ (instancetype)createContentWithFile:(NSString *)fileName;
++ (instancetype)localContentWithIdentifer:(NSInteger)bookId;
 
 - (void)updateContent;
 

@@ -14,18 +14,21 @@
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
         self.bookId = [[aDecoder decodeObjectForKey:@"bookId"] integerValue];
-        self.chapterNo = [[aDecoder decodeObjectForKey:@"chapterNo"] integerValue];
-        self.recordPage_ch = [[aDecoder decodeObjectForKey:@"recordPage_ch"] integerValue];
-        self.recordPage_to = [[aDecoder decodeObjectForKey:@"recordPage_to"] integerValue];
+        self.currentPaginate = [aDecoder decodeObjectForKey:@"currentPaginate"];
     }
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:@(self.bookId) forKey:@"bookId"];
-    [aCoder encodeObject:@(self.chapterNo) forKey:@"chapterNo"];
-    [aCoder encodeObject:@(self.recordPage_ch) forKey:@"recordPage_ch"];
-    [aCoder encodeObject:@(self.recordPage_to) forKey:@"recordPage_to"];
+    [aCoder encodeObject:self.currentPaginate forKey:@"currentPaginate"];
+}
+
++ (FHRecord *)emptyRecord:(NSInteger)bookId {
+    FHRecord *record = [FHRecord new];
+    record.bookId = bookId;
+    [record updateRecord];
+    return record;
 }
 
 - (void)updateRecord {
@@ -33,14 +36,18 @@
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
     [archiver encodeObject:self forKey:FHRecordKey(self.bookId)];
     [archiver finishEncoding];
-    [FHUserDefault setObject:data forKey:[NSString stringWithFormat:@"%ld",self.bookId]];
+    [FHUserDefault setObject:data forKey:FHRecordKey(self.bookId)];
     [FHUserDefault synchronize];
 }
 
 + (FHRecord *)getRecordWithBookId:(NSInteger)bookId {
     NSData *data = [FHUserDefault objectForKey:FHRecordKey(bookId)];
     NSKeyedUnarchiver *unarchive = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-    return [unarchive decodeObjectForKey:FHRecordKey(bookId)];
+    FHRecord *record = [unarchive decodeObjectForKey:FHRecordKey(bookId)];
+    if (record) {
+        return record;
+    }
+    return [self emptyRecord:bookId];
 }
 
 @end

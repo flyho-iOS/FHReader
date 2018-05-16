@@ -12,17 +12,20 @@
 
 @protocol FHContentSourceProtocol <NSObject>
 
-@required
-
-/** 书id */
-@property (nonatomic,assign) NSInteger bookId;
-/** 当前页码 */
-@property (nonatomic,assign,readonly) NSInteger currentPageNo;
-/** 书籍所有信息 */
-@property (nonatomic,strong) FHReadContent *contents;
+@optional
 
 - (void)fetchContentWithBookId:(NSInteger)bookId success:(FetchContentSuccess)fetchSuccess andFailure:(FetchContentFailure)fetchFail;
 
 - (void)saveReadRecord;
+
+- (void)hasTurnNextPage;
+
+- (void)hasTurnLastPage;
+
+- (FHPaginateContent *)currentPageContent;
+
+- (FHPaginateContent *)nextPageContent;
+
+- (FHPaginateContent *)lastPageContent;
 
 @end
