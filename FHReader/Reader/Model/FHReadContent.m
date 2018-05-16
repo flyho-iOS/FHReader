@@ -22,14 +22,9 @@ static NSString *const FHContentCache = @"FHContentCache";
 }
 
 - (instancetype)initLocalWithIdentifer:(NSInteger)bookId {
-//    FHReadContent *content = [FHReadContent getCacheContentWithIdentifier:bookId];
-//    if (content) {
-//        return content;
-//    }
     if (self = [super init]) {
         _identifier = bookId;
         [self collectPaginateChapters];
-        
     }
     return self;
 }
@@ -53,7 +48,7 @@ static NSString *const FHContentCache = @"FHContentCache";
         pc.title = chapter.title;
         pc.content = pageContent[i];
         pc.totalPage = pageContent.count;
-        pc.chapterNo = chapter.chapterNo-1;
+        pc.chapterNo = chapter.chapterNo;
         pc.pageNo = i;
         [paginateContents setObject:pc forKey:FHPaginateKey(i)];
     }
@@ -98,7 +93,15 @@ static NSString *const FHContentCache = @"FHContentCache";
 
 #pragma mark - getter
 - (FHRecord *)record {
-    return [FHRecord getRecordWithBookId:self.identifier];
+    FHRecord *record = [FHRecord getRecordWithBookId:self.identifier];
+    if (record) {
+        return record;
+    }
+    record = [FHRecord new];
+    record.bookId = self.identifier;
+    NSDictionary *dict = self.chapters[FHChapterKey((NSInteger)0)];
+    record.currentPaginate = dict[FHPaginateKey((NSInteger)0)];
+    return record;
 }
 
 - (NSInteger)totalChapter {

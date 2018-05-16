@@ -11,9 +11,7 @@
 #import "FHRecord.h"
 
 @interface FHSourceLocalManager ()
-{
-    NSInteger _currentPage;
-}
+
 @end
 
 @implementation FHSourceLocalManager
@@ -27,7 +25,15 @@
 
 - (void)fetchContentWithBookId:(NSInteger)bookId success:(FetchContentSuccess)fetchSuccess andFailure:(FetchContentFailure)fetchFail {
     self.contents = [FHReadContent localContentWithIdentifer:bookId];
-    self.currentPaginate = self.contents.record.currentPaginate;
+    FHPaginateContent *page = self.contents.record.currentPaginate;
+    if (page) {
+        self.currentPaginate = page;
+    }else{
+        NSDictionary *chapterDict = self.contents.chapters[FHChapterKey((NSInteger)0)];
+        FHPaginateContent *page = chapterDict[FHPaginateKey((NSInteger)0)];
+        self.currentPaginate = page;
+    }
+    
     if (self.contents) {
         fetchSuccess(self.contents);
     }else{

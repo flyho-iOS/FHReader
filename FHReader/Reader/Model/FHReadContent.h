@@ -23,7 +23,7 @@
 /** 书签 */
 @property (nonatomic,copy) NSArray<FHBookMark *> *marks;
 /** 章节 */
-@property (nonatomic,copy) NSDictionary <NSString *,FHChapter *> *chapters;
+@property (nonatomic,copy) NSDictionary <NSString *,NSDictionary *> *chapters;
 /** 所有章节所有分页 */
 @property (nonatomic,copy) NSArray<FHPaginateContent *> *paginateContents;
 /** 阅读记录 */

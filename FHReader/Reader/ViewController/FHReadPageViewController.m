@@ -60,8 +60,7 @@
     [self.manager fetchContentWithBookId:self.bookId success:^(FHReadContent *contents) {
         
         _content = contents;
-        _currentPaginateNo = _content.record.recordPage_to;
-        FHPaginateContent *pc = _content.paginateContents[_content.record.recordPage_to];
+        FHPaginateContent *pc = [self.manager currentPageContent];
         ContentViewController *contentVC = [ContentViewController createPageWithContent:pc];
         _frontVC = contentVC;
         [_pageViewController setViewControllers:@[contentVC] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
@@ -99,16 +98,10 @@
     }
     if (finished && completed) { //翻页动画结束且已翻页
         if (isSwipeForward) {
-//            _currentPaginateNo ++;
             [self.manager hasTurnNextPage];
         }else{
-//            _currentPaginateNo --;
             [self.manager hasTurnLastPage];
         }
-//        if (_currentPaginateNo < 0) _currentPaginateNo = 0;
-//        if (_currentPaginateNo > _content.paginateContents.count-1) _currentPaginateNo = _content.paginateContents.count-1;
-        
-//        NSLog(@"第%ld章,第%ld页,共%ld页,第%ld页",[_content.paginateContents[_currentPaginateNo] chapterNo]+1,[_content.paginateContents[_currentPaginateNo] pageNo]+1,_content.paginateContents.count,_currentPaginateNo+1);
 
         [self.manager saveReadRecord];
     }
@@ -128,15 +121,10 @@
 #pragma mark - UIPageViewControllerDataSource
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
     
-//    if (_currentPaginateNo == 0) return nil;
-//
-//    NSInteger cpn = _currentPaginateNo-1;
-//    FHPaginateContent *pc = _content.paginateContents[cpn];
+    FHPaginateContent *page = [self.manager lastPageContent];
+    if (!page) return nil;
     
-    if (![self.manager lastPageContent]) return nil;
-    
-    FHPaginateContent *pc = [self.manager lastPageContent];
-    ContentViewController *contentVC = [ContentViewController createPageWithContent:pc];
+    ContentViewController *contentVC = [ContentViewController createPageWithContent:page];
     // 页面镜像反转，作为页面背面
     if ([viewController isKindOfClass:[ContentViewController class]] && pageViewController.doubleSided) {
         return [FHBackViewController createBackPageWithFontPage:contentVC];
@@ -149,17 +137,12 @@
     if ([viewController isKindOfClass:[ContentViewController class]] && pageViewController.doubleSided) {
         return [FHBackViewController createBackPageWithFontPage:viewController];
     }
-//    NSInteger cpn = _currentPaginateNo + 1;
-//
-//    if (cpn > _content.paginateContents.count-1) return nil;
-//
-//    FHPaginateContent *pc = _content.paginateContents[cpn];
     
-    if (![self.manager nextPageContent]) return nil;
+    FHPaginateContent *page = [self.manager nextPageContent];
     
-    FHPaginateContent *pc = [self.manager nextPageContent];
+    if (!page) return nil;
     
-    ContentViewController *contentVC = [ContentViewController createPageWithContent:pc];
+    ContentViewController *contentVC = [ContentViewController createPageWithContent:page];
     return contentVC;
 }
 

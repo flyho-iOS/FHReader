@@ -44,10 +44,7 @@
     NSData *data = [FHUserDefault objectForKey:FHRecordKey(bookId)];
     NSKeyedUnarchiver *unarchive = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
     FHRecord *record = [unarchive decodeObjectForKey:FHRecordKey(bookId)];
-    if (record) {
-        return record;
-    }
-    return [self emptyRecord:bookId];
+    return record;
 }
 
 @end

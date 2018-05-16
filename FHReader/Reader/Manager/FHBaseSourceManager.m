@@ -8,7 +8,15 @@
 
 #import "FHBaseSourceManager.h"
 
+@interface FHBaseSourceManager ()
+{
+    FHPaginateContent *_tempPage;
+}
+@end
+
 @implementation FHBaseSourceManager
+
+#pragma mark - FHContentSourceProtocol
 
 - (void)hasTurnLastPage {
     if ([self isFirstChapter] && [self isFirstPage])
@@ -25,6 +33,7 @@
     {
         self.currentPaginate.pageNo --;
     }
+    self.currentPaginate = _tempPage;
 }
 
 - (void)hasTurnNextPage {
@@ -42,6 +51,7 @@
     {
         self.currentPaginate.pageNo ++;
     }
+    self.currentPaginate = _tempPage;
 }
 
 - (FHPaginateContent *)nextPageContent {
@@ -53,15 +63,17 @@
     {
         NSInteger chapterNo = self.currentPaginate.chapterNo + 1;
         NSInteger pageNo = 0;
-        FHChapter *chapter = self.contents.chapters[FHChapterKey(chapterNo)];
-        FHPaginateContent *page = chapter.chapterPaginates[FHPaginateKey(pageNo)];
+        NSDictionary *chapterDict = self.contents.chapters[FHChapterKey(chapterNo)];
+        FHPaginateContent *page = chapterDict[FHPaginateKey(pageNo)];
+        _tempPage = page;
         return page;
     }
     else
     {
         NSInteger pageNo = self.currentPaginate.pageNo + 1;
-        FHChapter *chapter = self.contents.chapters[FHChapterKey(self.currentPaginate.chapterNo)];
-        FHPaginateContent *page = chapter.chapterPaginates[FHPaginateKey(pageNo)];
+        NSDictionary *chapterDict = self.contents.chapters[FHChapterKey(self.currentPaginate.chapterNo)];
+        FHPaginateContent *page = chapterDict[FHPaginateKey(pageNo)];
+        _tempPage = page;
         return page;
     }
 }
@@ -75,17 +87,31 @@
     {
         NSInteger chapterNo = self.currentPaginate.chapterNo - 1;
         NSInteger pageNo = self.currentPaginate.totalPage - 1;
-        FHChapter *chapter = self.contents.chapters[FHChapterKey(chapterNo)];
-        FHPaginateContent *page = chapter.chapterPaginates[FHPaginateKey(pageNo)];
+        NSDictionary *chapterDict = self.contents.chapters[FHChapterKey(chapterNo)];
+        FHPaginateContent *page = chapterDict[FHPaginateKey(pageNo)];
+//        self.currentPaginate = page;
+        _tempPage = page;
         return page;
     }
     else
     {
         NSInteger pageNo = self.currentPaginate.pageNo - 1;
-        FHChapter *chapter = self.contents.chapters[FHChapterKey(self.currentPaginate.chapterNo)];
-        FHPaginateContent *page = chapter.chapterPaginates[FHPaginateKey(pageNo)];
+        NSDictionary *chapterDict = self.contents.chapters[FHChapterKey(self.currentPaginate.chapterNo)];
+        FHPaginateContent *page = chapterDict[FHPaginateKey(pageNo)];
+//        self.currentPaginate = page;
+        _tempPage = page;
         return page;
     }
+}
+
+- (FHPaginateContent *)currentPageContent {
+    if (self.contents.record) {
+        return self.contents.record.currentPaginate;
+    }
+    NSDictionary *chapterDict = self.contents.chapters[FHChapterKey((NSInteger)0)];
+    FHPaginateContent *page = chapterDict[FHPaginateKey((NSInteger)0)];
+    self.currentPaginate = page;
+    return page;
 }
 
 - (void)saveReadRecord {

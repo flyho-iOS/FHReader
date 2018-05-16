@@ -60,22 +60,22 @@
         self.progressLb.text = [_dataSource chapterReadProgress];
     }
     if (dataSourceHas.chapterContent) {
-        NSString *key = [NSString stringWithFormat:@"ReadDrawerCache%@--%@",self.titleLb.text,self.progressLb.text];
-        FHReadPageDrawer *drawer = [[FHDrawerCache shareInstance] getDrawerWithIdentifier:key];
-        if (drawer)
-        {
-            self.drawer = drawer;
-        }
-        else
-        {
+//        NSString *key = [NSString stringWithFormat:@"ReadDrawerCache%@--%@",self.titleLb.text,self.progressLb.text];
+//        FHReadPageDrawer *drawer = [[FHDrawerCache shareInstance] getDrawerWithIdentifier:key];
+//        if (drawer)
+//        {
+//            self.drawer = drawer;
+//        }
+//        else
+//        {
             self.drawer = [FHFrameConstructor parseContent:[_dataSource chapterContent]
                                                     config:[FHReadConfig shareConfiguration]
                                                     bounds:ReadPageRect];
-            [[FHDrawerCache shareInstance] cacheDrawer:self.drawer
-                                        WithIdentifier:key];
-        }
-        [self setNeedsDisplay];
+//            [[FHDrawerCache shareInstance] cacheDrawer:self.drawer
+//                                        WithIdentifier:key];
+//        }
     }
+    [self setNeedsDisplay];
 }
 
 #pragma mark - setter
