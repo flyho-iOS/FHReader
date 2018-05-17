@@ -144,12 +144,12 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)readBarDidClickChangeLineSpace {
+    [self changeTextAttribute];
+}
+
 - (void)readerBarDidChangeFontSize {
-    [self.manager.contents collectPaginateChapters];
-    
-    _frontVC.paginateContent = [self.manager refetchPaginateContent];
-    [_frontVC redrawReadPage];
-    [self.manager saveReadRecord];
+    [self changeTextAttribute];
 }
 
 - (void)readerBarDidClickThemeColor:(UIColor *)color {
@@ -176,6 +176,13 @@
         return;
     }
     _frontVC.paginateContent = page;
+    [_frontVC redrawReadPage];
+    [self.manager saveReadRecord];
+}
+
+- (void)changeTextAttribute {
+    [self.manager.contents collectPaginateChapters];
+    _frontVC.paginateContent = [self.manager refetchPaginateContent];
     [_frontVC redrawReadPage];
     [self.manager saveReadRecord];
 }

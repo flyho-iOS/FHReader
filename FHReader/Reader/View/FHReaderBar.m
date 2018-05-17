@@ -71,6 +71,9 @@
     self.fontSizeLb.text = [NSString stringWithFormat:@"%d",(int)config.fontSize];
     [self chageFontSize];
 }
+
+
+
 - (IBAction)changeThemeColor:(id)sender {
     UIButton *button = (UIButton *)sender;
     if (_delegate && [_delegate respondsToSelector:@selector(readerBarDidClickThemeColor:)]) {

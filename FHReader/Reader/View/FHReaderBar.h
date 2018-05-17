@@ -18,6 +18,7 @@
 - (void)readerBarDidChangeFontSize;
 - (void)readerBarDidClickLastChapter;
 - (void)readerBarDidClickNextChapter;
+- (void)readBarDidClickChangeLineSpace;
 - (void)readerBarDidClickThemeColor:(UIColor *)color;
 
 @end
