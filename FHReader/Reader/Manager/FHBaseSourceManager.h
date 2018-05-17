@@ -12,4 +12,6 @@
 
 @interface FHBaseSourceManager : NSObject <FHContentSourceProtocol>
 
+- (instancetype)initWithBookId:(NSInteger)bookId;
+
 @end

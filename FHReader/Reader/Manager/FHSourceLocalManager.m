@@ -16,13 +16,6 @@
 
 @implementation FHSourceLocalManager
 
-- (instancetype)initWithBookId:(NSInteger)bookId {
-    if (self = [super init]) {
-        self.bookId = bookId;
-    }
-    return self;
-}
-
 - (void)fetchContentWithBookId:(NSInteger)bookId success:(FetchContentSuccess)fetchSuccess andFailure:(FetchContentFailure)fetchFail {
     self.contents = [FHReadContent localContentWithIdentifer:bookId];
     FHPaginateContent *page = self.contents.record.currentPaginate;

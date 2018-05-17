@@ -23,6 +23,14 @@
 @synthesize currentPaginate;
 @synthesize contents;
 
+
+- (instancetype)initWithBookId:(NSInteger)bookId {
+    if (self = [super init]) {
+        self.bookId = bookId;
+    }
+    return self;
+}
+
 #pragma mark - FHContentSourceProtocol
 
 - (void)didFinishTurnPage {

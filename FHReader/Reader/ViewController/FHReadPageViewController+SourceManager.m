@@ -15,6 +15,7 @@
 @implementation FHReadPageViewController (SourceManager)
 
 - (void)fetchContentWithBookId:(NSInteger)bookId success:(FetchContentSuccess)fetchSuccess andFailure:(FetchContentFailure)fetchFail {
+    FHSourceOnlineManager *manager = [[FHSourceOnlineManager alloc] initWithBookId:bookId];
     
 }
 

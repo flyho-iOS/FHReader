@@ -10,8 +10,4 @@
 
 @implementation FHSourceOnlineManager
 
-- (void)fetchContentWithBookId:(NSInteger)bookId success:(FetchContentSuccess)fetchSuccess andFailure:(FetchContentFailure)fetchFail {
-    
-}
-
 @end
