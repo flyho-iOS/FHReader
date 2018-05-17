@@ -12,11 +12,4 @@
 
 @interface FHBaseSourceManager : NSObject <FHContentSourceProtocol>
 
-/** 书id */
-@property (nonatomic,assign) NSInteger bookId;
-/** 当前页码 */
-@property (nonatomic,strong) FHPaginateContent *currentPaginate;
-/** 书籍所有信息 */
-@property (nonatomic,strong) FHReadContent *contents;
-
 @end

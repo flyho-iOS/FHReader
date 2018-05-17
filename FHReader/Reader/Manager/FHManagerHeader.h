@@ -10,8 +10,9 @@
 #define FHManagerHeader_h
 
 @class FHReadContent;
+@protocol FHContentSourceProtocol;
 
-typedef void(^FetchContentSuccess)(FHReadContent *contents);
+typedef void(^FetchContentSuccess)(id<FHContentSourceProtocol> manager);
 
 typedef void(^FetchContentFailure)(NSString *errorMsg);
 

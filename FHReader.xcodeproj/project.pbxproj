@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F2598C320AD1CCD0001EDAC /* FHReadPageViewController+SourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2598C220AD1CCD0001EDAC /* FHReadPageViewController+SourceManager.m */; };
 		4FA2ECA2205BAF2B00E2199E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2ECA1205BAF2B00E2199E /* AppDelegate.m */; };
 		4FA2ECA5205BAF2B00E2199E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2ECA4205BAF2B00E2199E /* ViewController.m */; };
 		4FA2ECA8205BAF2B00E2199E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2ECA6205BAF2B00E2199E /* Main.storyboard */; };
@@ -44,6 +45,8 @@
 
 /* Begin PBXFileReference section */
 		4F2598C020AA75560001EDAC /* FHManagerHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FHManagerHeader.h; sourceTree = "<group>"; };
+		4F2598C120AD1CCD0001EDAC /* FHReadPageViewController+SourceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FHReadPageViewController+SourceManager.h"; sourceTree = "<group>"; };
+		4F2598C220AD1CCD0001EDAC /* FHReadPageViewController+SourceManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "FHReadPageViewController+SourceManager.m"; sourceTree = "<group>"; };
 		4FA2EC9D205BAF2B00E2199E /* FHReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FHReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA2ECA0205BAF2B00E2199E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4FA2ECA1205BAF2B00E2199E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -272,6 +275,8 @@
 				4FA2ED14205BAFA900E2199E /* FHPageViewController.m */,
 				4FA2ED15205BAFA900E2199E /* FHReadPageViewController.h */,
 				4FA2ED16205BAFA900E2199E /* FHReadPageViewController.m */,
+				4F2598C120AD1CCD0001EDAC /* FHReadPageViewController+SourceManager.h */,
+				4F2598C220AD1CCD0001EDAC /* FHReadPageViewController+SourceManager.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -415,6 +420,7 @@
 				4FA2ED33205BAFA900E2199E /* FHNote.m in Sources */,
 				4FA2ED32205BAFA900E2199E /* FHChapter.m in Sources */,
 				4FAF52E620A146D400D6E8C5 /* FHSourceOnlineManager.m in Sources */,
+				4F2598C320AD1CCD0001EDAC /* FHReadPageViewController+SourceManager.m in Sources */,
 				4FA2ED35205BAFA900E2199E /* FHReadContent.m in Sources */,
 				4FA2ECB0205BAF2B00E2199E /* main.m in Sources */,
 				4FA2ED36205BAFA900E2199E /* FHRecord.m in Sources */,

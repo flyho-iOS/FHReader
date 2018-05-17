@@ -19,10 +19,34 @@
 
 @implementation FHBaseSourceManager
 
+@synthesize bookId;
+@synthesize currentPaginate;
+@synthesize contents;
+
 #pragma mark - FHContentSourceProtocol
 
 - (void)didFinishTurnPage {
     self.currentPaginate = _tempPage;
+}
+
+- (FHPaginateContent *)lastChapterContent {
+    
+    if ([self isFirstChapter]) return nil;
+    
+    NSDictionary *dict = self.contents.chapters[FHChapterKey(self.currentPaginate.chapterNo-1)];
+    FHPaginateContent *page = dict[FHPaginateKey((NSInteger)0)];
+    self.currentPaginate = page;
+    return page;
+}
+
+- (FHPaginateContent *)nextChapterContent {
+    
+    if ([self isLastChapter]) return nil;
+    
+    NSDictionary *dict = self.contents.chapters[FHChapterKey(self.currentPaginate.chapterNo+1)];
+    FHPaginateContent *page = dict[FHPaginateKey((NSInteger)0)];
+    self.currentPaginate = page;
+    return page;
 }
 
 - (FHPaginateContent *)nextPageContent {
@@ -85,6 +109,21 @@
     return page;
 }
 
+- (FHPaginateContent *)refetchPaginateContent {
+    FHPaginateContent *page = nil;
+    NSDictionary *dict = self.contents.chapters[FHChapterKey(self.contents.record.currentPaginate.chapterNo)];
+    if (self.contents.record.currentPaginate.pageNo > dict.count - 1)
+    {
+        page = dict[FHPaginateKey(dict.count-1)];
+    }
+    else
+    {
+        page = dict[FHPaginateKey(self.contents.record.currentPaginate.pageNo)];
+    }
+    self.currentPaginate = page;
+    return page;
+}
+
 - (void)saveReadRecord {
     FHRecord *record = self.contents.record;
     record.currentPaginate = self.currentPaginate;
@@ -107,7 +146,5 @@
 - (BOOL)isLastPage {
     return self.currentPaginate.pageNo == self.currentPaginate.totalPage - 1;
 }
-
-
 
 @end

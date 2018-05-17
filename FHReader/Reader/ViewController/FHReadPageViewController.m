@@ -19,7 +19,7 @@
 @interface FHReadPageViewController () <UIPageViewControllerDelegate,UIPageViewControllerDataSource,FHReaderBarDelegate>
 {
     NSInteger _currentPaginateNo;
-    ContentViewController *_frontVC;
+    ContentViewController *_frontVC; //当前页面
 }
 @property (nonatomic,strong) FHPageViewController *pageViewController;
 @property (nonatomic,strong) FHReaderBar *readerToolBar;
@@ -47,19 +47,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self initUI];
+    [self requestData];
+}
+
+- (void)initUI {
     [self addChildViewController:self.pageViewController];
     [self.view addSubview:self.pageViewController.view];
     [self.view addSubview:self.readerToolBar];
-    [self requestData];
 }
 
 - (void)requestData {
     
     self.manager = [FHSourceLocalManager new];
     
-    [self.manager fetchContentWithBookId:self.bookId success:^(FHReadContent *contents) {
+    [self.manager fetchContentWithBookId:self.bookId success:^(id<FHContentSourceProtocol> manager) {
         
-        _content = contents;
         FHPaginateContent *pc = [self.manager currentPageContent];
         ContentViewController *contentVC = [ContentViewController createPageWithContent:pc];
         _frontVC = contentVC;
@@ -83,7 +86,7 @@
     UITouch *touch = [touches anyObject];
     CGPoint point = [touch locationInView:self.view];
     NSLog(@"点击位置 --> x=%f,y=%f",point.x,point.y);
-    if (point.x > 50 && point.x < FHScreenWidth-50) {
+    if (point.x > 30 && point.x < FHScreenWidth-30) {
         self.readerToolBar.hidden = !self.readerToolBar.hidden;
     }
     [self setNeedsStatusBarAppearanceUpdate];
@@ -92,8 +95,8 @@
 #pragma mark UIPageViewControllerDelegate
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
     if (finished && completed) { //翻页动画结束且已翻页
-        [self.manager didFinishTurnPage];
-        [self.manager saveReadRecord];
+        [self.manager didFinishTurnPage]; //记录当前页面
+        [self.manager saveReadRecord]; //保存阅读记录
     }
     // 翻页完成后开启交互，防止翻页过快导致页码定位错误
     if (finished && self.pageViewController.transitionStyle == UIPageViewControllerTransitionStylePageCurl) {
@@ -129,7 +132,6 @@
     }
     
     FHPaginateContent *page = [self.manager nextPageContent];
-    
     if (!page) return nil;
     
     ContentViewController *contentVC = [ContentViewController createPageWithContent:page];
@@ -143,16 +145,11 @@
 }
 
 - (void)readerBarDidChangeFontSize {
-    [self.content collectPaginateChapters];
-    [self.content updateContent];
-    [[FHDrawerCache shareInstance] clearDrawerCache];
+    [self.manager.contents collectPaginateChapters];
     
-    if (_currentPaginateNo >= self.content.paginateContents.count-1) {
-        _currentPaginateNo = self.content.paginateContents.count-1;
-    }
-    
-    _frontVC.paginateContent = self.content.paginateContents[_currentPaginateNo];
+    _frontVC.paginateContent = [self.manager refetchPaginateContent];
     [_frontVC redrawReadPage];
+    [self.manager saveReadRecord];
 }
 
 - (void)readerBarDidClickThemeColor:(UIColor *)color {
@@ -162,33 +159,25 @@
 
 - (void)readerBarDidClickLastChapter {
     
-//    if (_currentPaginateNo == 0) return;
-//
-//    FHPaginateContent *currentPage = self.content.paginateContents[_currentPaginateNo];
-//    NSInteger currentChapterNo = currentPage.chapterNo;
-//
-//    if (currentChapterNo <= 0) return;
-//
-//    FHChapter *lastChapter = self.content.chapters[currentChapterNo-1];
-//    FHPaginateContent *lastChapterPage = self.content.paginateContents[lastChapter.startPageNo];
-//    _frontVC.paginateContent = lastChapterPage;
-//    _currentPaginateNo = lastChapter.startPageNo;
-//    [_frontVC redrawReadPage];
+    FHPaginateContent *page = [self.manager lastChapterContent];
+    if (!page) {
+        NSLog(@"已经是第一章了");
+        return;
+    }
+    _frontVC.paginateContent = page;
+    [_frontVC redrawReadPage];
+    [self.manager saveReadRecord];
 }
 
 - (void)readerBarDidClickNextChapter {
-//    if (_currentPaginateNo == self.content.paginateContents.count -1) return;
-//    
-//    FHPaginateContent *currentPage = self.content.paginateContents[_currentPaginateNo];
-//    NSInteger currentChapterNo = currentPage.chapterNo;
-//    
-//    if (currentChapterNo >= self.content.chapters.count-1) return;
-//    
-//    FHChapter *nextChapter = self.content.chapters[currentChapterNo+1];
-//    FHPaginateContent *nextChapterPage = self.content.paginateContents[nextChapter.startPageNo];
-//    _frontVC.paginateContent = nextChapterPage;
-//    _currentPaginateNo = nextChapter.startPageNo;
-//    [_frontVC redrawReadPage];
+    FHPaginateContent *page = [self.manager nextChapterContent];
+    if (!page) {
+        NSLog(@"已经是最后一章了");
+        return;
+    }
+    _frontVC.paginateContent = page;
+    [_frontVC redrawReadPage];
+    [self.manager saveReadRecord];
 }
 
 #pragma mark - lazy load

@@ -70,6 +70,11 @@ static NSString *const FHContentCache = @"FHContentCache";
     [FHUserDefault synchronize];
 }
 
+- (void)removeContent {
+    [FHUserDefault removeObjectForKey:FHReadContentKey(self.identifier)];
+    [FHUserDefault synchronize];
+}
+
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:@(self.identifier) forKey:@"identifier"];
     [aCoder encodeObject:self.notes forKey:@"notes"];

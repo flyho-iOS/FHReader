@@ -35,7 +35,7 @@
     }
     
     if (self.contents) {
-        fetchSuccess(self.contents);
+        fetchSuccess(self);
     }else{
         fetchFail(@"解析文档失败");
     }

@@ -42,4 +42,6 @@
 
 - (void)collectPaginateChapters;
 
+- (void)removeContent;
+
 @end
