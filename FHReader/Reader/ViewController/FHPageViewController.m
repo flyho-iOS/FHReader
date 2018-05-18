@@ -47,42 +47,10 @@
         default:
             break;
     }
-    NSDictionary *options = @{key : @(UIPageViewControllerSpineLocationNone)};
+    NSDictionary *options = @{key : @(UIPageViewControllerSpineLocationMax)};
     return [[self alloc] initWithTransitionStyle:style
                            navigationOrientation:orientation
                                          options:options];
-}
-
-- (instancetype)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style navigationOrientation:(UIPageViewControllerNavigationOrientation)navigationOrientation options:(NSDictionary<NSString *,id> *)options {
-    if (self = [super initWithTransitionStyle:style navigationOrientation:navigationOrientation options:options]) {
-        self.view.backgroundColor = [FHReadConfig shareConfiguration].themeColor;
-        [self fixGestureConflict];
-    }
-    return self;
-}
-
-- (void)fixGestureConflict {
-//    UIScrollView *scrollView;
-//    for (UIView *view in self.view.subviews) {
-//        if ([view isKindOfClass:[UIScrollView class]]) {
-//            scrollView = (UIScrollView *)view;
-//            break;
-//        }
-//    }
-//    for (UIGestureRecognizer *ges in scrollView.gestureRecognizers) {
-//        if ([ges isKindOfClass:[UIGestureRecognizer class]]) {
-//            ges.delegate = self;
-//        }
-//        
-//    }
-}
-
--(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    return YES;
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(nonnull UITouch *)touch {
-    return YES;
 }
 
 @end

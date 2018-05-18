@@ -7,21 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@class FHReaderBar;
-
-@protocol FHReaderBarDelegate <NSObject>
-
-@optional
-
-- (void)readerBarDidClickExit;
-- (void)readerBarDidChangeFontSize;
-- (void)readerBarDidClickLastChapter;
-- (void)readerBarDidClickNextChapter;
-- (void)readBarDidClickChangeLineSpace;
-- (void)readerBarDidClickThemeColor:(UIColor *)color;
-
-@end
+#import "FHReaderBarDelegate.h"
 
 @interface FHReaderBar : UIView
 

@@ -92,7 +92,6 @@
         NSDictionary *chapterDict = self.contents.chapters[FHChapterKey(chapterNo)];
         NSInteger pageNo = chapterDict.count - 1;
         FHPaginateContent *page = chapterDict[FHPaginateKey(pageNo)];
-//        self.currentPaginate = page;
         _tempPage = page;
         return page;
     }
@@ -101,7 +100,6 @@
         NSDictionary *chapterDict = self.contents.chapters[FHChapterKey(self.currentPaginate.chapterNo)];
         NSInteger pageNo = self.currentPaginate.pageNo-1;
         FHPaginateContent *page = chapterDict[FHPaginateKey(pageNo)];
-//        self.currentPaginate = page;
         _tempPage = page;
         return page;
     }
@@ -132,10 +130,12 @@
     return page;
 }
 
-- (void)saveReadRecord {
+- (void)saveReadRecord:(FHPaginateContent *)page {
     FHRecord *record = self.contents.record;
-    record.currentPaginate = self.currentPaginate;
+    record.currentPaginate = page;
     [record updateRecord];
+    self.currentPaginate = page;
+    NSLog(@"save-->%ld章，%ld页",page.chapterNo+1,page.pageNo+1);
 }
 
 #pragma mark - private

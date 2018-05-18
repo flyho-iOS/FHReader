@@ -24,7 +24,7 @@
 
 - (void)fetchContentWithBookId:(NSInteger)bookId success:(FetchContentSuccess)fetchSuccess andFailure:(FetchContentFailure)fetchFail;
 
-- (void)saveReadRecord;
+- (void)saveReadRecord:(FHPaginateContent *)page;
 
 - (void)didFinishTurnPage;
 
