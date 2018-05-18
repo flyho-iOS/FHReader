@@ -47,7 +47,7 @@
         default:
             break;
     }
-    NSDictionary *options = @{key : @(UIPageViewControllerSpineLocationMax)};
+    NSDictionary *options = @{key : @(UIPageViewControllerSpineLocationNone)};
     return [[self alloc] initWithTransitionStyle:style
                            navigationOrientation:orientation
                                          options:options];

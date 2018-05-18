@@ -40,7 +40,7 @@ static FHReadConfig *config = nil;
     _fontSize = 18;
     _fontColor = [UIColor blackColor];
     _lineSpace = 0.5f;
-    _style = FHReadPageTransitionStyleScrollHorizontal;
+    _style = FHReadPageTransitionStylePageCurl;
     _fontName = @"ArialMT";
 }
 

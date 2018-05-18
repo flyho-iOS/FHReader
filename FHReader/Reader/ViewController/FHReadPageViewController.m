@@ -19,13 +19,12 @@
 
 static NSString *const FHReadPageCellID = @"FHReadPageCellID";
 
-@interface FHReadPageViewController () <UIPageViewControllerDelegate,UIPageViewControllerDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,FHReaderBarDelegate>
+@interface FHReadPageViewController () <UIPageViewControllerDelegate,UIPageViewControllerDataSource,FHReaderBarDelegate>
 {
-    NSInteger _currentPaginateNo;
     ContentViewController *_frontVC; //当前页面
+    BOOL _isTurning; // 翻页中
 }
 
-@property (nonatomic,strong) UICollectionView *pageCollectionView;
 @property (nonatomic,strong) FHPageViewController *pageViewController;
 @property (nonatomic,strong) FHReaderBar *readerToolBar;
 @property (nonatomic,strong) FHReadContent *content;
@@ -96,6 +95,8 @@ static NSString *const FHReadPageCellID = @"FHReadPageCellID";
     
     if ([FHReadConfig shareConfiguration].style != FHReadPageTransitionStylePageCurl) return;
     
+    if (_isTurning) return;
+    
     UITouch *touch = [touches anyObject];
     CGPoint point = [touch locationInView:self.view];
     NSLog(@"点击位置 --> x=%f,y=%f",point.x,point.y);
@@ -114,6 +115,7 @@ static NSString *const FHReadPageCellID = @"FHReadPageCellID";
 
 #pragma mark UIPageViewControllerDelegate
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
+    _isTurning = NO;
     if (finished && completed) { //翻页动画结束且已翻页
         [self.manager didFinishTurnPage]; //记录当前页面
         [self.manager saveReadRecord:_frontVC.paginateContent]; //保存阅读记录
@@ -128,9 +130,8 @@ static NSString *const FHReadPageCellID = @"FHReadPageCellID";
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
-//    if (self.pageViewController.transitionStyle == UIPageViewControllerTransitionStylePageCurl) {
-        _pageViewController.view.userInteractionEnabled = NO; //关掉用户交互
-//    }
+    _isTurning = YES;
+    _pageViewController.view.userInteractionEnabled = NO; //关掉用户交互
     _frontVC = (ContentViewController *)[pendingViewControllers lastObject];
     NSLog(@"will transition-->%ld章，%ld页",_frontVC.paginateContent.chapterNo+1,_frontVC.paginateContent.pageNo+1);
 }
@@ -169,28 +170,6 @@ static NSString *const FHReadPageCellID = @"FHReadPageCellID";
     NSLog(@"next-->%ld章，%ld页",page.chapterNo+1,page.pageNo+1);
     ContentViewController *contentVC = [ContentViewController createPageWithContent:page];
     return contentVC;
-}
-
-#pragma mark - UICollectionViewDelegate
-#pragma mark - UICollectionViewDataSource
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 1;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
-}
-
-#pragma mark - UICollectionViewDelegateFlowLayout
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeZero;
-}
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 0;
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    return 0;
 }
 
 #pragma mark - FHReaderBarDelegate
@@ -248,8 +227,8 @@ static NSString *const FHReadPageCellID = @"FHReadPageCellID";
         _pageViewController = [FHPageViewController configPageViewController];
         _pageViewController.view.frame = self.view.bounds;
         _pageViewController.delegate = self;
-        _pageViewController.dataSource = self;//[FHReadConfig shareConfiguration].style == FHReadPageTransitionStylePageCurl
-        _pageViewController.doubleSided = NO;
+        _pageViewController.dataSource = self;//
+        _pageViewController.doubleSided = [FHReadConfig shareConfiguration].style == FHReadPageTransitionStylePageCurl;
     }
     return _pageViewController;
 }
@@ -262,24 +241,6 @@ static NSString *const FHReadPageCellID = @"FHReadPageCellID";
         _readerToolBar.hidden = YES;
     }
     return _readerToolBar;
-}
-
-- (UICollectionView *)pageCollectionView {
-    if (!_pageCollectionView) {
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.itemSize = CGSizeMake(self.view.width, self.view.height);
-        if ([FHReadConfig shareConfiguration].style == FHReadPageTransitionStyleScrollHorizontal) {
-            layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        }else if ([FHReadConfig shareConfiguration].style == FHReadPageTransitionStyleScrollVertical) {
-            layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-        }
-        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height) collectionViewLayout:layout];
-        collectionView.delegate = self;
-        collectionView.dataSource = self;
-        [collectionView registerNib:[UINib nibWithNibName:@"FHReadPageCell" bundle:nil] forCellWithReuseIdentifier:FHReadPageCellID];
-        _pageCollectionView = collectionView;
-    }
-    return _pageCollectionView;
 }
 
 @end

@@ -56,7 +56,10 @@
     FHReadConfig *config = [FHReadConfig shareConfiguration];
     config.fontSize --;
     
-    if (config.fontSize < FONT_MIN) return;
+    if (config.fontSize < FONT_MIN) {
+        config.fontSize = FONT_MIN;
+        return;
+    }
     
     self.fontSizeLb.text = [NSString stringWithFormat:@"%d",(int)config.fontSize];
     [self chageFontSize];
@@ -66,7 +69,10 @@
     FHReadConfig *config = [FHReadConfig shareConfiguration];
     config.fontSize ++;
     
-    if (config.fontSize > FONT_MAX) return;
+    if (config.fontSize > FONT_MAX) {
+        config.fontSize = FONT_MAX;
+        return;
+    }
     
     self.fontSizeLb.text = [NSString stringWithFormat:@"%d",(int)config.fontSize];
     [self chageFontSize];
