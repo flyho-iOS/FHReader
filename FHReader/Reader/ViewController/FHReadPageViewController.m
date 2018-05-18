@@ -71,11 +71,7 @@ static NSString *const FHReadPageCellID = @"FHReadPageCellID";
         FHPaginateContent *pc = [self.manager currentPageContent];
         ContentViewController *contentVC = [ContentViewController createPageWithContent:pc];
         _frontVC = contentVC;
-        [_pageViewController setViewControllers:@[contentVC] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:^(BOOL finished) {
-            if (finished) {
-                
-            }
-        }];
+        [_pageViewController setViewControllers:@[contentVC] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
         
     } andFailure:^(NSString *errorMsg) {
         
@@ -93,22 +89,45 @@ static NSString *const FHReadPageCellID = @"FHReadPageCellID";
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     
-    if ([FHReadConfig shareConfiguration].style != FHReadPageTransitionStylePageCurl) return;
+    if ([FHReadConfig shareConfiguration].style != FHReadPageTransitionStylePageCurl && self.readerToolBar.hidden) return;
     
     if (_isTurning) return;
     
     UITouch *touch = [touches anyObject];
     CGPoint point = [touch locationInView:self.view];
     NSLog(@"点击位置 --> x=%f,y=%f",point.x,point.y);
-    if (point.x > 30 && point.x < FHScreenWidth-30) {
+    if (point.x > 50 && point.x < FHScreenWidth-50) {
         self.readerToolBar.hidden = !self.readerToolBar.hidden;
     }
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    if (!self.readerToolBar.hidden) {
-        return;
+- (void)tapGesAction:(UITapGestureRecognizer *)tapGes {
+    
+    if (_isTurning) return;
+    
+    CGPoint point = [tapGes locationInView:self.view];
+    NSLog(@"点击位置 --> x=%f,y=%f",point.x,point.y);
+    if (point.x > 60 && point.x < FHScreenWidth-60) {
+        self.readerToolBar.hidden = !self.readerToolBar.hidden;
+    }
+    [self setNeedsStatusBarAppearanceUpdate];
+
+    if ([FHReadConfig shareConfiguration].style != FHReadPageTransitionStyleNone) return;
+    
+    FHPaginateContent *page = nil;
+    if (point.x < 60)
+    {
+        page = [self.manager lastPageContent];
+    }
+    else if (point.x > FHScreenWidth-60)
+    {
+        page = [self.manager nextPageContent];
+    }
+    if (page) {
+        [self.manager saveReadRecord:page];
+        _frontVC.paginateContent = page;
+        [_frontVC redrawReadPage];
     }
 }
 
@@ -124,14 +143,18 @@ static NSString *const FHReadPageCellID = @"FHReadPageCellID";
     NSLog(@"did transition-->%ld章，%ld页",cvc.paginateContent.chapterNo+1,cvc.paginateContent.pageNo+1);
     NSLog(@"--------------------------------------------");
     // 翻页完成后开启交互，防止翻页过快导致页码定位错误
-//    if (finished && self.pageViewController.transitionStyle == UIPageViewControllerTransitionStylePageCurl) {
+    if ([FHReadConfig shareConfiguration].style == FHReadPageTransitionStylePageCurl) {
         self.pageViewController.view.userInteractionEnabled = YES;
-//    }
+    }
+    
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
     _isTurning = YES;
-    _pageViewController.view.userInteractionEnabled = NO; //关掉用户交互
+    if ([FHReadConfig shareConfiguration].style == FHReadPageTransitionStylePageCurl) {
+        _pageViewController.view.userInteractionEnabled = NO; //关掉用户交互
+    }
+
     _frontVC = (ContentViewController *)[pendingViewControllers lastObject];
     NSLog(@"will transition-->%ld章，%ld页",_frontVC.paginateContent.chapterNo+1,_frontVC.paginateContent.pageNo+1);
 }
@@ -229,6 +252,10 @@ static NSString *const FHReadPageCellID = @"FHReadPageCellID";
         _pageViewController.delegate = self;
         _pageViewController.dataSource = self;//
         _pageViewController.doubleSided = [FHReadConfig shareConfiguration].style == FHReadPageTransitionStylePageCurl;
+        if ([FHReadConfig shareConfiguration].style != FHReadPageTransitionStylePageCurl) {
+            UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesAction:)];
+            [_pageViewController.view addGestureRecognizer:tapGes];
+        }
     }
     return _pageViewController;
 }

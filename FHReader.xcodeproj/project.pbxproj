@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4F2598C320AD1CCD0001EDAC /* FHReadPageViewController+SourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2598C220AD1CCD0001EDAC /* FHReadPageViewController+SourceManager.m */; };
-		4F2598C720AD5E450001EDAC /* FHReadScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2598C620AD5E450001EDAC /* FHReadScrollViewController.m */; };
-		4F2598CB20AD68710001EDAC /* FHReadPageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2598C920AD68710001EDAC /* FHReadPageCell.m */; };
-		4F2598CC20AD68710001EDAC /* FHReadPageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F2598CA20AD68710001EDAC /* FHReadPageCell.xib */; };
 		4FA2ECA2205BAF2B00E2199E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2ECA1205BAF2B00E2199E /* AppDelegate.m */; };
 		4FA2ECA5205BAF2B00E2199E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2ECA4205BAF2B00E2199E /* ViewController.m */; };
 		4FA2ECA8205BAF2B00E2199E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2ECA6205BAF2B00E2199E /* Main.storyboard */; };
@@ -51,11 +48,7 @@
 		4F2598C120AD1CCD0001EDAC /* FHReadPageViewController+SourceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FHReadPageViewController+SourceManager.h"; sourceTree = "<group>"; };
 		4F2598C220AD1CCD0001EDAC /* FHReadPageViewController+SourceManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "FHReadPageViewController+SourceManager.m"; sourceTree = "<group>"; };
 		4F2598C420AD336E0001EDAC /* FHReaderBarDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FHReaderBarDelegate.h; sourceTree = "<group>"; };
-		4F2598C520AD5E450001EDAC /* FHReadScrollViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FHReadScrollViewController.h; sourceTree = "<group>"; };
-		4F2598C620AD5E450001EDAC /* FHReadScrollViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FHReadScrollViewController.m; sourceTree = "<group>"; };
-		4F2598C820AD68710001EDAC /* FHReadPageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FHReadPageCell.h; sourceTree = "<group>"; };
-		4F2598C920AD68710001EDAC /* FHReadPageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FHReadPageCell.m; sourceTree = "<group>"; };
-		4F2598CA20AD68710001EDAC /* FHReadPageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FHReadPageCell.xib; sourceTree = "<group>"; };
+		4F2598CD20AE71980001EDAC /* FHReadPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHReadPageViewController.h; sourceTree = "<group>"; };
 		4FA2EC9D205BAF2B00E2199E /* FHReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FHReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA2ECA0205BAF2B00E2199E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4FA2ECA1205BAF2B00E2199E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -97,7 +90,6 @@
 		4FA2ED12205BAFA900E2199E /* FHBackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHBackViewController.m; sourceTree = "<group>"; };
 		4FA2ED13205BAFA900E2199E /* FHPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHPageViewController.h; sourceTree = "<group>"; };
 		4FA2ED14205BAFA900E2199E /* FHPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHPageViewController.m; sourceTree = "<group>"; };
-		4FA2ED15205BAFA900E2199E /* FHReadPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHReadPageViewController.h; sourceTree = "<group>"; };
 		4FA2ED16205BAFA900E2199E /* FHReadPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHReadPageViewController.m; sourceTree = "<group>"; };
 		4FA2ED3D205BB16500E2199E /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		4FA2ED42205BC2DB00E2199E /* 123456.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 123456.json; sourceTree = "<group>"; };
@@ -270,9 +262,6 @@
 				67DB6A962063DB320016ABEB /* FHReaderBar.xib */,
 				4FA2ED0C205BAFA900E2199E /* FHReadView.h */,
 				4FA2ED0D205BAFA900E2199E /* FHReadView.m */,
-				4F2598C820AD68710001EDAC /* FHReadPageCell.h */,
-				4F2598C920AD68710001EDAC /* FHReadPageCell.m */,
-				4F2598CA20AD68710001EDAC /* FHReadPageCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -286,9 +275,7 @@
 				4FA2ED12205BAFA900E2199E /* FHBackViewController.m */,
 				4FA2ED13205BAFA900E2199E /* FHPageViewController.h */,
 				4FA2ED14205BAFA900E2199E /* FHPageViewController.m */,
-				4F2598C520AD5E450001EDAC /* FHReadScrollViewController.h */,
-				4F2598C620AD5E450001EDAC /* FHReadScrollViewController.m */,
-				4FA2ED15205BAFA900E2199E /* FHReadPageViewController.h */,
+				4F2598CD20AE71980001EDAC /* FHReadPageViewController.h */,
 				4FA2ED16205BAFA900E2199E /* FHReadPageViewController.m */,
 				4F2598C120AD1CCD0001EDAC /* FHReadPageViewController+SourceManager.h */,
 				4F2598C220AD1CCD0001EDAC /* FHReadPageViewController+SourceManager.m */,
@@ -416,7 +403,6 @@
 			files = (
 				4FA2ECAD205BAF2B00E2199E /* LaunchScreen.storyboard in Resources */,
 				4FA2ECAA205BAF2B00E2199E /* Assets.xcassets in Resources */,
-				4F2598CC20AD68710001EDAC /* FHReadPageCell.xib in Resources */,
 				4FA2ECA8205BAF2B00E2199E /* Main.storyboard in Resources */,
 				4FA2ED43205BC2DB00E2199E /* 123456.json in Resources */,
 				67DB6A982063DB320016ABEB /* FHReaderBar.xib in Resources */,
@@ -437,7 +423,6 @@
 				4FA2ED32205BAFA900E2199E /* FHChapter.m in Sources */,
 				4FAF52E620A146D400D6E8C5 /* FHSourceOnlineManager.m in Sources */,
 				4F2598C320AD1CCD0001EDAC /* FHReadPageViewController+SourceManager.m in Sources */,
-				4F2598CB20AD68710001EDAC /* FHReadPageCell.m in Sources */,
 				4FA2ED35205BAFA900E2199E /* FHReadContent.m in Sources */,
 				4FA2ECB0205BAF2B00E2199E /* main.m in Sources */,
 				4FA2ED36205BAFA900E2199E /* FHRecord.m in Sources */,
@@ -448,7 +433,6 @@
 				4FA2ED4C205BC47200E2199E /* NSObject+YYModel.m in Sources */,
 				67DB6A912061347F0016ABEB /* FHPaginateContent.m in Sources */,
 				4FAF52DE20A0408500D6E8C5 /* FHDrawerCache.m in Sources */,
-				4F2598C720AD5E450001EDAC /* FHReadScrollViewController.m in Sources */,
 				4FA2ED39205BAFA900E2199E /* FHBackViewController.m in Sources */,
 				67DB6A992063DB320016ABEB /* FHReaderBar.m in Sources */,
 				4FA2ED4D205BC47200E2199E /* YYClassInfo.m in Sources */,
